@@ -128,7 +128,7 @@ void main() async {
 
   // Force use production Render server for music and images
   ApiConstants.useProductionServer();
-  print("✅ Using production Render server: ${ApiConstants.resolvedApiUrl}");
+  print("Using production Render server: ${ApiConstants.resolvedApiUrl}");
 
   // Use API URL from ApiConstants (reads from .env or uses default)
   print("Final resolved API URL: ${ApiConstants.resolvedApiUrl}");

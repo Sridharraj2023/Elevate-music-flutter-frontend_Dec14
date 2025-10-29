@@ -52,9 +52,9 @@ class MusicList extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print("🎵 Music item tapped: ${item.title}");
-                        print("🎵 File URL: ${item.fileUrl}");
-                        print("🎵 Is Binaural: $isBinaural");
+                        print("Music item tapped: ${item.title}");
+                        print("File URL: ${item.fileUrl}");
+                        print("Is Binaural: $isBinaural");
 
                         if (isBinaural) {
                           // Play Binaural
@@ -62,7 +62,7 @@ class MusicList extends StatelessWidget {
                           bottomBarController.isBinauralPlaying.value = true;
                         } else {
                           // Play Music
-                          print("🎵 Setting music playing state");
+                          print("Setting music playing state");
                           bottomBarController.isMusicPlaying.value = true;
                         }
 
@@ -77,7 +77,7 @@ class MusicList extends StatelessWidget {
                               : "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav";
                           bottomBarController.playBinaural(testUrl);
                         } else {
-                          print("🎵 Calling playMusic with: ${item.fileUrl}");
+                          print("Calling playMusic with: ${item.fileUrl}");
                           // Test with a known working URL if the API URL fails
                           final testUrl = item.fileUrl.isNotEmpty
                               ? item.fileUrl

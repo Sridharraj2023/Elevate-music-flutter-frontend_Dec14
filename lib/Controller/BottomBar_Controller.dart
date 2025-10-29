@@ -43,21 +43,21 @@
 //     }
 //   }
 
-//   /// **🚀 Stop binaural audio**
+//   /// **Stop binaural audio**
 //   void stopBinaural() {
 //     binauralPlayer.stop();
 //     isBinauralPlaying.value = false;
 //     hideAudioPlayer();
 //   }
 
-//   /// **🚀 Stop music audio**
+//   /// **Stop music audio**
 //   void stopMusic() {
 //     musicPlayer.stop();
 //     isMusicPlaying.value = false;
 //     hideAudioPlayer();
 //   }
 
-//   /// **🚀 Hide the audio player when both are stopped**
+//   /// **Hide the audio player when both are stopped**
 //   void hideAudioPlayer() {
 //     if (!isBinauralPlaying.value && !isMusicPlaying.value) {
 //       isBinauralPlaying.value = false;
@@ -178,10 +178,10 @@ class BottomBarController extends GetxController {
   /// Play binaural audio (From Assets)
   Future<void> playBinaural(String assetPath) async {
     try {
-      print("🎧 Attempting to play binaural: $assetPath");
+      print("Attempting to play binaural: $assetPath");
 
       if (assetPath.isEmpty) {
-        print("❌ Error: Binaural URL is empty");
+        print("Error: Binaural URL is empty");
         return;
       }
 
@@ -190,58 +190,58 @@ class BottomBarController extends GetxController {
       // Convert local URLs to production URLs
       final finalUrl = _convertToProductionUrl(assetPath);
 
-      print("🎧 Setting URL for binaural player...");
+      print("Setting URL for binaural player...");
       await binauralPlayer.setUrl(finalUrl); // Load audio file from URL
 
-      print("🎧 Setting volume: ${binauralVolume.value}");
+      print("Setting volume: ${binauralVolume.value}");
       binauralPlayer.setVolume(binauralVolume.value);
 
-      print("🎧 Starting playback...");
+      print("Starting playback...");
       await binauralPlayer.play();
 
       isBinauralPlaying.value = true;
       hasBinauralPlayed.value = true;
 
-      print("✅ Binaural playback started successfully");
+      print("Binaural playback started successfully");
 
       // Update current index based on the track
       final index = binauralPlaylist.indexOf(assetPath);
       if (index != -1) {
         currentBinauralIndex.value = index;
-        print("🎧 Current binaural index: $index");
+        print("Current binaural index: $index");
       }
 
       // Listen for player state changes with more detailed monitoring
       binauralPlayer.playerStateStream.listen((state) {
         print(
-            "🎧 Binaural player state: ${state.processingState}, playing: ${state.playing}");
+            "Binaural player state: ${state.processingState}, playing: ${state.playing}");
 
         if (state.processingState == ProcessingState.ready && state.playing) {
-          print("🎧 ✅ Binaural is actually playing!");
+          print("Binaural is actually playing!");
         } else if (state.processingState == ProcessingState.loading) {
-          print("🎧 🔄 Binaural is loading...");
+          print("Binaural is loading...");
         } else if (state.processingState == ProcessingState.buffering) {
-          print("🎧 🔄 Binaural is buffering...");
+          print("Binaural is buffering...");
         } else if (state.processingState == ProcessingState.completed) {
-          print("🎧 ✅ Binaural playback completed");
+          print("Binaural playback completed");
         } else if (state.processingState == ProcessingState.idle) {
-          print("🎧 ⏸️ Binaural player is idle");
+          print("Binaural player is idle");
         }
       });
 
       // Also listen for duration stream to confirm audio is loaded
       binauralPlayer.durationStream.listen((duration) {
         if (duration != null) {
-          print("🎧 Audio duration: ${duration.inSeconds} seconds");
+          print("Audio duration: ${duration.inSeconds} seconds");
         }
       });
     } catch (e) {
-      print("❌ Error playing binaural: $e");
-      print("❌ Error type: ${e.runtimeType}");
+      print("Error playing binaural: $e");
+      print("Error type: ${e.runtimeType}");
 
       // More detailed error analysis
       if (e is PlayerException) {
-        print("❌ PlayerException details:");
+        print("PlayerException details:");
         print("   - Code: ${e.code}");
         print("   - Message: ${e.message}");
         print("   - URL that failed: $assetPath");
@@ -249,7 +249,7 @@ class BottomBarController extends GetxController {
         // Common PlayerException codes and their meanings
         switch (e.code) {
           case 0:
-            print("❌ Code 0: Source error - URL is invalid or unreachable");
+            print("Code 0: Source error - URL is invalid or unreachable");
             print("   Possible causes:");
             print("   - URL is malformed");
             print("   - File doesn't exist at URL");
@@ -261,7 +261,7 @@ class BottomBarController extends GetxController {
             final finalUrl = _convertToProductionUrl(assetPath);
             if (ApiConstants.isApiServerUrl(finalUrl)) {
               print(
-                  "💡 SOLUTION: This file needs to be uploaded to production server");
+                  "SOLUTION: This file needs to be uploaded to production server");
               print("   File: ${Uri.parse(finalUrl).pathSegments.last}");
               print(
                   "   Upload this file from local server to production server");
@@ -270,13 +270,13 @@ class BottomBarController extends GetxController {
             }
             break;
           case 1:
-            print("❌ Code 1: Format error - Audio format not supported");
+            print("Code 1: Format error - Audio format not supported");
             break;
           case 2:
-            print("❌ Code 2: Network error - Network connectivity issues");
+            print("Code 2: Network error - Network connectivity issues");
             break;
           default:
-            print("❌ Unknown PlayerException code: ${e.code}");
+            print("Unknown PlayerException code: ${e.code}");
         }
       }
 
@@ -289,23 +289,23 @@ class BottomBarController extends GetxController {
   /// Play music audio (From Assets)
   Future<void> playMusic(String assetPath) async {
     try {
-      print("🎵 Attempting to play music: $assetPath");
+      print("Attempting to play music: $assetPath");
 
       if (assetPath.isEmpty) {
-        print("❌ Error: Music URL is empty");
+        print("Error: Music URL is empty");
         return;
       }
 
       // Test URL accessibility
-      print("🎵 Testing URL accessibility...");
+      print("Testing URL accessibility...");
       try {
         final uri = Uri.parse(assetPath);
-        print("🎵 Parsed URI: $uri");
-        print("🎵 Scheme: ${uri.scheme}");
-        print("🎵 Host: ${uri.host}");
-        print("🎵 Path: ${uri.path}");
+        print("Parsed URI: $uri");
+        print("Scheme: ${uri.scheme}");
+        print("Host: ${uri.host}");
+        print("Path: ${uri.path}");
       } catch (uriError) {
-        print("❌ Invalid URL format: $uriError");
+        print("Invalid URL format: $uriError");
       }
 
       musicTrack.value = assetPath; // Set the music track path
@@ -313,57 +313,57 @@ class BottomBarController extends GetxController {
       // Convert local URLs to production URLs
       final finalUrl = _convertToProductionUrl(assetPath);
 
-      print("🎵 Setting URL for music player...");
+      print("Setting URL for music player...");
       await musicPlayer.setUrl(finalUrl); // Load audio file from URL
 
-      print("🎵 Setting volume: ${musicVolume.value}");
+      print("Setting volume: ${musicVolume.value}");
       musicPlayer.setVolume(musicVolume.value);
 
-      print("🎵 Starting playback...");
+      print("Starting playback...");
       await musicPlayer.play();
 
       isMusicPlaying.value = true;
       hasMusicPlayed.value = true;
 
-      print("✅ Music playback started successfully");
+      print("Music playback started successfully");
 
       // Update current index based on the track
       final index = musicPlaylist.indexOf(assetPath);
       if (index != -1) {
         currentMusicIndex.value = index;
-        print("🎵 Current music index: $index");
+        print("Current music index: $index");
       }
 
       // Listen for player state changes with more detailed monitoring
       musicPlayer.playerStateStream.listen((state) {
         print(
-            "🎵 Music player state: ${state.processingState}, playing: ${state.playing}");
+            "Music player state: ${state.processingState}, playing: ${state.playing}");
         if (state.processingState == ProcessingState.ready && state.playing) {
-          print("🎵 ✅ Music is actually playing!");
+          print("Music is actually playing!");
         } else if (state.processingState == ProcessingState.loading) {
-          print("🎵 🔄 Music is loading...");
+          print("Music is loading...");
         } else if (state.processingState == ProcessingState.buffering) {
-          print("🎵 🔄 Music is buffering...");
+          print("Music is buffering...");
         } else if (state.processingState == ProcessingState.completed) {
-          print("🎵 ✅ Music playback completed");
+          print("Music playback completed");
         } else if (state.processingState == ProcessingState.idle) {
-          print("🎵 ⏸️ Music player is idle");
+          print("Music player is idle");
         }
       });
 
       // Also listen for duration stream to confirm audio is loaded
       musicPlayer.durationStream.listen((duration) {
         if (duration != null) {
-          print("🎵 Audio duration: ${duration.inSeconds} seconds");
+          print("Audio duration: ${duration.inSeconds} seconds");
         }
       });
     } catch (e) {
-      print("❌ Error playing music: $e");
-      print("❌ Error type: ${e.runtimeType}");
+      print("Error playing music: $e");
+      print("Error type: ${e.runtimeType}");
 
       // More detailed error analysis
       if (e is PlayerException) {
-        print("❌ PlayerException details:");
+        print("PlayerException details:");
         print("   - Code: ${e.code}");
         print("   - Message: ${e.message}");
         print("   - URL that failed: $assetPath");
@@ -371,7 +371,7 @@ class BottomBarController extends GetxController {
         // Common PlayerException codes and their meanings
         switch (e.code) {
           case 0:
-            print("❌ Code 0: Source error - URL is invalid or unreachable");
+            print("Code 0: Source error - URL is invalid or unreachable");
             print("   Possible causes:");
             print("   - URL is malformed");
             print("   - File doesn't exist at URL");
@@ -383,7 +383,7 @@ class BottomBarController extends GetxController {
             final finalUrl = _convertToProductionUrl(assetPath);
             if (ApiConstants.isApiServerUrl(finalUrl)) {
               print(
-                  "💡 SOLUTION: This file needs to be uploaded to production server");
+                  "SOLUTION: This file needs to be uploaded to production server");
               print("   File: ${Uri.parse(finalUrl).pathSegments.last}");
               print(
                   "   Upload this file from local server to production server");
@@ -392,13 +392,13 @@ class BottomBarController extends GetxController {
             }
             break;
           case 1:
-            print("❌ Code 1: Format error - Audio format not supported");
+            print("Code 1: Format error - Audio format not supported");
             break;
           case 2:
-            print("❌ Code 2: Network error - Network connectivity issues");
+            print("Code 2: Network error - Network connectivity issues");
             break;
           default:
-            print("❌ Unknown PlayerException code: ${e.code}");
+            print("Unknown PlayerException code: ${e.code}");
         }
       }
 
@@ -492,21 +492,21 @@ class BottomBarController extends GetxController {
     musicPlayer.seek(position);
   }
 
-  /// **🚀 Stop binaural audio**
+  /// **Stop binaural audio**
   void stopBinaural() {
     binauralPlayer.stop();
     isBinauralPlaying.value = false;
     hideAudioPlayer();
   }
 
-  /// **🚀 Stop music audio**
+  /// **Stop music audio**
   void stopMusic() {
     musicPlayer.stop();
     isMusicPlaying.value = false;
     hideAudioPlayer();
   }
 
-  /// **🚀 Hide the audio player when both are stopped**
+  /// **Hide the audio player when both are stopped**
   void hideAudioPlayer() {
     if (!isBinauralPlaying.value && !isMusicPlaying.value) {
       isBinauralPlaying.value = false;
@@ -564,13 +564,13 @@ class BottomBarController extends GetxController {
   }
 
   void setAllMusic(List<MusicItem> music) {
-    print("🎵 Setting music playlist with ${music.length} items");
+    print("Setting music playlist with ${music.length} items");
     musicPlaylist.value = music.map((item) => item.fileUrl).toList();
     musicPlaylists.value = music;
 
     // Debug: Print first few music URLs and test them
     for (int i = 0; i < music.length && i < 3; i++) {
-      print("🎵 Music $i: ${music[i].title} - ${music[i].fileUrl}");
+      print("Music $i: ${music[i].title} - ${music[i].fileUrl}");
       _testAudioUrl(music[i].fileUrl, "Music ${music[i].title}");
     }
   }
@@ -584,7 +584,7 @@ class BottomBarController extends GetxController {
       if (url.startsWith('/uploads/')) {
         final productionUrl =
             '${ApiConstants.resolvedApiUrl.replaceAll('/api', '')}$url';
-        print("🔄 Converting relative URL to production URL");
+        print("Converting relative URL to production URL");
         print("   Original: $url");
         print("   Production: $productionUrl");
         return productionUrl;
@@ -598,7 +598,7 @@ class BottomBarController extends GetxController {
           uri.host == 'localhost' ||
           uri.host == '127.0.0.1' ||
           uri.host.contains('local')) {
-        print("🔄 Converting local URL to production URL");
+        print("Converting local URL to production URL");
         print("   Original: $url");
 
         // Get production base URL from API constants
@@ -619,11 +619,11 @@ class BottomBarController extends GetxController {
 
       // If it's already a production URL, return as is
       if (ApiConstants.isApiServerUrl(url)) {
-        print("✅ Already using production URL: $url");
+        print("Already using production URL: $url");
         return url;
       }
     } catch (e) {
-      print("❌ Error converting URL: $e");
+      print("Error converting URL: $e");
     }
 
     return url;
@@ -637,13 +637,13 @@ class BottomBarController extends GetxController {
   /// Test if an audio URL is accessible
   Future<void> _testAudioUrl(String url, String name) async {
     if (url.isEmpty) {
-      print("❌ $name: URL is empty");
+      print("$name: URL is empty");
       return;
     }
 
     try {
       final uri = Uri.parse(url);
-      print("🔍 Testing $name URL: $url");
+      print("Testing $name URL: $url");
       print("   - Scheme: ${uri.scheme}");
       print("   - Host: ${uri.host}");
       print("   - Path: ${uri.path}");
@@ -653,7 +653,7 @@ class BottomBarController extends GetxController {
           uri.host.startsWith('10.') ||
           uri.host == 'localhost' ||
           uri.host == '127.0.0.1') {
-        print("⚠️  WARNING: $name is using a local IP address (${uri.host})");
+        print(" WARNING: $name is using a local IP address (${uri.host})");
         print("   This may not be accessible from your device/emulator");
         print("   Solutions:");
         print("   1. Use the same network as the server");
@@ -666,24 +666,24 @@ class BottomBarController extends GetxController {
       final response = await http.head(Uri.parse(url)).timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          print("⏰ $name: Request timed out after 10 seconds");
+          print("$name: Request timed out after 10 seconds");
           throw Exception('Request timeout');
         },
       );
       print("   - HTTP Status: ${response.statusCode}");
 
       if (response.statusCode == 200) {
-        print("✅ $name: URL is accessible");
+        print("$name: URL is accessible");
       } else {
-        print("❌ $name: URL returned status ${response.statusCode}");
+        print("$name: URL returned status ${response.statusCode}");
       }
     } catch (e) {
-      print("❌ $name: URL test failed - $e");
+      print("$name: URL test failed - $e");
 
       // Provide specific solutions based on error type
       if (e.toString().contains('timeout') ||
           e.toString().contains('Connection refused')) {
-        print("💡 Solution: Server is not reachable. Try:");
+        print("Solution: Server is not reachable. Try:");
         print(
             "   1. Check if server is running on ${Uri.parse(url).host}:${Uri.parse(url).port}");
         print("   2. Use production API URL instead of local server");
@@ -693,13 +693,13 @@ class BottomBarController extends GetxController {
   }
 
   void setAllBinaural(List<MusicItem> binaural) {
-    print("🎧 Setting binaural playlist with ${binaural.length} items");
+    print("Setting binaural playlist with ${binaural.length} items");
     binauralPlaylist.value = binaural.map((item) => item.fileUrl).toList();
     binauralPlaylists.value = binaural;
 
     // Debug: Print first few binaural URLs and test them
     for (int i = 0; i < binaural.length && i < 3; i++) {
-      print("🎧 Binaural $i: ${binaural[i].title} - ${binaural[i].fileUrl}");
+      print("Binaural $i: ${binaural[i].title} - ${binaural[i].fileUrl}");
       _testAudioUrl(binaural[i].fileUrl, "Binaural ${binaural[i].title}");
     }
   }

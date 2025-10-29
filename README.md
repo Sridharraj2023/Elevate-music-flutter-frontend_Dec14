@@ -1,188 +1,239 @@
-# Elevate Music Admin Dashboard
+# Elevate Music - Flutter Music Streaming App
 
-A modern React.js admin dashboard for managing the Elevate Music application, featuring professional toast notifications and comprehensive admin functionality.
+A modern Flutter mobile application for music streaming with binaural beats, subscription management, and immersive audio experiences.
 
-## 🚀 Features
+## Features
 
-- **Modern UI/UX** - Clean, responsive design with professional styling
-- **Toast Notifications** - React Toastify for professional user feedback
-- **User Management** - Complete user administration system
-- **Music Management** - Upload, edit, and manage music tracks
-- **Category Management** - Organize music with categories and types
-- **Subscription Plans** - Dynamic subscription plan management
-- **Authentication** - Secure login/logout with JWT tokens
-- **Responsive Design** - Works on desktop, tablet, and mobile
+### Music & Audio
+- **Music Streaming** - High-quality music playback
+- **Binaural Beats** - Specialized audio for focus, relaxation, and meditation
+- **Audio Equalizer** - Customizable sound settings
+- **Background Playback** - Continue listening while using other apps
+- **Playlist Management** - Create and manage your music collections
 
-## 🛠️ Tech Stack
+### User Management
+- **User Authentication** - Secure login and registration
+- **Profile Management** - Customize your user profile
+- **Password Recovery** - Email-based password reset
+- **User Dashboard** - Personalized music experience
 
-- **Frontend**: React.js 19, Vite
-- **Routing**: React Router DOM
-- **HTTP Client**: Axios
-- **Notifications**: React Toastify
-- **Icons**: React Icons
-- **Styling**: CSS3 with modern features
+### Subscription System
+- **Stripe Integration** - Secure payment processing
+- **Multiple Tiers** - Free and Premium subscription plans
+- **Subscription Management** - Easy upgrade/downgrade options
+- **Payment History** - Track your subscription status
 
-## 📦 Installation
+### Additional Features
+- **Push Notifications** - Stay updated with new releases
+- **Terms & Conditions** - Legal documentation viewer
+- **Disclaimer** - Important app information
+- **Responsive Design** - Works on mobile, tablet, and desktop
+- **Multi-platform** - Android, iOS, Web, Windows, macOS, Linux
+
+## Tech Stack
+
+### Frontend
+- **Framework:** Flutter/Dart
+- **State Management:** GetX
+- **UI Components:** Material Design
+- **Audio Player:** Just Audio
+- **HTTP Client:** http package
+- **Local Storage:** Shared Preferences
+
+### Backend Integration
+- **API Server:** Node.js REST API
+- **Base URL:** `http://example.com/api`
+- **Authentication:** JWT Tokens
+- **Payment Processing:** Stripe API
+
+### Key Packages
+```yaml
+dependencies:
+  flutter: sdk
+  get: ^4.6.6
+  http: ^1.2.2
+  flutter_stripe: ^11.5.0
+  just_audio: ^0.9.46
+  shared_preferences: ^2.3.4
+  flutter_dotenv: ^5.2.1
+  firebase_messaging: ^15.2.10
+  flutter_local_notifications: ^18.0.1
+```
+
+## Installation
+
+### Prerequisites
+- Flutter SDK (latest stable version)
+- Dart SDK
+- Android Studio / Xcode (for mobile development)
+- Git
+
+### Setup Steps
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/elevate-music-admin.git
-   cd elevate-music-admin
+   git clone https://github.com/Sridharraj2023/Elevate-music-oct29.git
+   cd Elevate-music-oct29
    ```
 
 2. **Install dependencies**
    ```bash
-   npm install
+   flutter pub get
    ```
 
-3. **Set up environment variables**
+3. **Configure environment variables**
+   
+   Create a `.env` file in the project root:
+   ```env
+   API_URL=http://172.234.201.117:5000/api
+   STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   ENVIRONMENT=production
+   ```
+
+4. **Run the app**
    ```bash
-   # Create .env file
-   echo "VITE_API_URL=https://your-backend-domain.com/api" > .env
+   # For Android/iOS
+   flutter run
+   
+   # For Web
+   flutter run -d chrome
+   
+   # For Desktop (Windows/macOS/Linux)
+   flutter run -d windows  # or macos, linux
    ```
 
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
+## Project Structure
 
-## 🌐 Deployment
+```
+lib/
+├── Controller/           # GetX Controllers
+│   ├── Auth_Controller.dart
+│   ├── BottomBar_Controller.dart
+│   ├── Home_Controller.dart
+│   ├── Music_Controller.dart
+│   ├── Binaural_controller.dart
+│   ├── Subscription_Controller.dart
+│   └── Equalizer_Controller.dart
+├── Model/               # Data models
+│   ├── user.dart
+│   ├── Song.dart
+│   ├── Binaural_category.dart
+│   ├── music_item.dart
+│   └── Subscription_Tiers.dart
+├── View/                # UI screens and widgets
+│   ├── Screens/
+│   └── Widgets/
+├── services/            # Services
+│   └── notification_service.dart
+├── utils/               # Utilities
+│   └── responsive_helper.dart
+├── utlis/              # API & helpers
+│   ├── api_constants.dart
+│   ├── auth_helper.dart
+│   └── subscription_error_handler.dart
+└── main.dart           # App entry point
 
-### Netlify Deployment
-
-1. **Connect to Netlify**
-   - Go to [Netlify](https://netlify.com)
-   - Click "New site from Git"
-   - Connect your GitHub repository
-
-2. **Configure Build Settings**
-   - **Base directory**: `/` (root)
-   - **Build command**: `npm run build`
-   - **Publish directory**: `dist`
-
-3. **Set Environment Variables**
-   - `VITE_API_URL`: `https://your-backend-domain.com/api`
-
-4. **Deploy**
-   - Click "Deploy site"
-   - Your admin dashboard will be live!
-
-### Manual Deployment
-
-```bash
-# Build for production
-npm run build
-
-# The dist folder contains your production files
-# Upload the contents to your hosting provider
+assets/
+├── audio/              # Audio files
+├── images/             # Images and logos
+└── legal/              # Legal documents (PDF)
 ```
 
-## 🔧 Configuration
+## Configuration
+
+### API Configuration
+
+Edit `lib/utlis/api_constants.dart`:
+```dart
+class ApiConstants {
+  static String get apiUrl => dotenv.env['API_URL'] ?? "http://example.com/api";
+  static String get publishKey => dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? 'your_key';
+}
+```
 
 ### Environment Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `VITE_API_URL` | Backend API URL | `https://api.elevate-music.com/api` |
+The app supports the following environment variables:
+- `API_URL` - Backend API base URL
+- `STRIPE_PUBLISHABLE_KEY` - Stripe public key
+- `STRIPE_SECRET_KEY` - Stripe secret key
+- `ENVIRONMENT` - Environment (development/production)
 
-### API Endpoints
+## Build for Production
 
-The admin dashboard connects to these backend endpoints:
-
-- **Authentication**: `/api/users/auth`, `/api/users/logout`
-- **Users**: `/api/users`, `/api/users/profile`
-- **Music**: `/api/music`, `/api/music/create`
-- **Categories**: `/api/categories`
-- **Subscription Plans**: `/api/subscription-plans`
-
-## 📁 Project Structure
-
-```
-src/
-├── admin/                 # Admin-specific components
-│   ├── components/        # Admin layout components
-│   └── pages/            # Admin pages (Dashboard, Users, Music, etc.)
-├── components/           # Shared components
-│   ├── Login.jsx         # Login page
-│   ├── Signup.jsx        # Registration page
-│   └── ProtectedRoute.jsx # Route protection
-├── user/                 # User-specific components
-├── utils/                # Utility functions
-│   └── toast.js          # Toast notification service
-├── App.jsx               # Main app component
-└── main.jsx             # App entry point
+### Android APK
+```bash
+flutter build apk --release
 ```
 
-## 🎨 Features Overview
+### iOS App
+```bash
+flutter build ios --release
+```
 
-### Admin Dashboard
-- **Dashboard**: Overview of system statistics
-- **User Management**: View, edit, delete users
-- **Music Management**: Upload, edit, delete music tracks
-- **Category Management**: Organize music with categories
-- **Subscription Plans**: Manage pricing and features
+### Web App
+```bash
+flutter build web --release
+```
 
-### User Interface
-- **Login/Signup**: Secure authentication
-- **User Dashboard**: Basic user interface
-- **Profile Management**: User profile settings
+### Windows/macOS/Linux
+```bash
+flutter build windows --release
+flutter build macos --release
+flutter build linux --release
+```
 
-### Toast Notifications
-- **Success Messages**: Green toast for successful operations
-- **Error Messages**: Red toast for errors
-- **Warning Messages**: Orange toast for warnings
-- **Info Messages**: Blue toast for information
-- **Auto-dismiss**: Configurable auto-close timing
-
-## 🔒 Security
+## Security
 
 - JWT token authentication
-- Protected routes for admin access
 - Secure API communication
+- Encrypted local storage
+- Stripe PCI compliance
 - Input validation and sanitization
 
-## 🚀 Getting Started
+## API Endpoints
 
-1. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+### Authentication
+- `POST /api/users/` - User registration
+- `POST /api/users/auth` - User login
+- `POST /api/users/forgot-password` - Password reset request
+- `POST /api/users/reset-password/:token` - Reset password
 
-2. **Open your browser**
-   - Navigate to `http://localhost:5173`
+### Music
+- `GET /api/music` - Get all music
+- `GET /api/music/:id` - Get specific music
+- `GET /api/categories` - Get music categories
 
-3. **Login as admin**
-   - Use your admin credentials
-   - Access the full admin dashboard
+### Subscription
+- `POST /api/subscription/create-payment-intent` - Create payment
+- `GET /api/subscription/status` - Get subscription status
 
-## 📝 Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run deploy` - Build and prepare for deployment
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is proprietary software for the Elevate Music application.
 
-## 🆘 Support
+## Contact
 
 For support and questions:
-- Check the deployment guide in `DEPLOYMENT.md`
-- Review the build logs in Netlify
-- Verify environment variables are set correctly
-- Ensure your backend API is accessible
+- Email: support@elevateintune.com
+- GitHub: [Sridharraj2023](https://github.com/Sridharraj2023)
+
+## Acknowledgments
+
+- Flutter team for the amazing framework
+- GetX for state management
+- Just Audio for audio playback
+- Stripe for payment processing
 
 ---
 
-**Built with ❤️ for Elevate Music**
+**Built with using Flutter**

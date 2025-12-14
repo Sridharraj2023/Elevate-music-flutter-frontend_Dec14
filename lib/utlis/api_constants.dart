@@ -14,8 +14,8 @@ class ApiConstants {
   static String get secretKey =>
       dotenv.env['STRIPE_SECRET_KEY'] ?? 'sk_test_your_stripe_secret_key_here';
 
-  // Stripe Price ID (hardcoded)
-  static const String priceId = 'price_1S2wmjIjXTLOotvon7MPBu3q';
+  // Stripe Price ID (matches backend configuration)
+  static const String priceId = 'price_1SBWUzIjXTLOotvoFYI56BHw';
 
   // Debug method to print all environment variables
   static void printEnvVars() {
@@ -39,7 +39,7 @@ class ApiConstants {
 
   // Convenience methods for switching between environments
   static void useLocalServer() {
-    setApiUrlOverride("http://192.168.0.100:5000/api");
+    setApiUrlOverride("http://localhost:5000/api");
   }
 
   static void useProductionServer() {

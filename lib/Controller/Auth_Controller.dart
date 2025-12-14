@@ -16,50 +16,66 @@ class AuthController {
     String baseUrl = "${ApiConstants.resolvedApiUrl}/users/";
     var headers = {'Content-Type': 'application/json'};
 
-    log(user.password);
-    log(user.email);
+    log("=== SIGNUP DEBUG ===");
+    log("API URL: $baseUrl");
+    log("Email: ${user.email}");
+    log("Username: ${user.username}");
 
-    var request = http.Request('POST', Uri.parse(baseUrl));
-    request.body = json.encode({
-      "name": user.username,
-      "email": user.email,
-      "password": user.password,
-      "role": "user"
-    });
-    request.headers.addAll(headers);
+    try {
+      var request = http.Request('POST', Uri.parse(baseUrl));
+      request.body = json.encode({
+        "name": user.username,
+        "email": user.email,
+        "password": user.password,
+        "role": "user"
+      });
+      request.headers.addAll(headers);
+      
+      log("Request body: ${request.body}");
 
-    http.StreamedResponse response = await request.send();
-    log(response.statusCode.toString());
+      http.StreamedResponse response = await request.send();
+      log("Response status: ${response.statusCode}");
+      
+      String responseBody = await response.stream.bytesToString();
+      log("Response body: $responseBody");
 
-    if (response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              "Account created successfully! Please subscribe to continue."),
-          backgroundColor: Colors.green,
-        ),
-      );
-      print(await response.stream.bytesToString());
-
-      // Auto-login the user after successful signup
-      try {
-        await login(user.email, user.password, context);
-      } catch (e) {
-        print("Auto-login failed after signup: $e");
-        // If auto-login fails, redirect to login screen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                "Account created successfully! Please subscribe to continue."),
+            backgroundColor: Colors.green,
+          ),
         );
+        log("Signup successful: $responseBody");
+
+        // Auto-login the user after successful signup
+        try {
+          await login(user.email, user.password, context);
+        } catch (e) {
+          log("Auto-login failed after signup: $e");
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Signup failed: ${response.reasonPhrase}"),
+            backgroundColor: Colors.red,
+          ),
+        );
+        log("Signup failed: ${response.reasonPhrase}");
       }
-    } else {
+    } catch (e) {
+      log("Signup error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Signup failed. Please try again."),
+          content: Text("Network error: $e"),
           backgroundColor: Colors.red,
         ),
       );
-      print(response.reasonPhrase);
     }
   }
 
@@ -82,11 +98,10 @@ class AuthController {
       if (response.statusCode == 200) {
         var responseData = jsonDecode(response.body);
         log(responseData.toString());
-        String token =
-            responseData["token"]; // Assuming the API returns a JWT token
-        String name = responseData["name"];
-        String email = responseData["email"];
-        String id = responseData["_id"];
+        String token = responseData["token"] ?? ""; // JWT token from API
+        String name = responseData["name"] ?? "";
+        String email = responseData["email"] ?? "";
+        String id = responseData["id"] ?? responseData["_id"] ?? "";
 
         // Save token to local storage for future authenticated requests
         SharedPreferences prefs = await SharedPreferences.getInstance();

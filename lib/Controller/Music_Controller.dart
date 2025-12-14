@@ -20,18 +20,18 @@ class MusicController {
 
   Future<List<Category>> fetchMusicCategory() async {
     final response =
-        await http.get(Uri.parse('${ApiConstants.apiUrl}/categories'));
+        await http.get(Uri.parse('${ApiConstants.resolvedApiUrl}/categories'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
 
-      final binaural = data.firstWhere(
+      final musicCategory = data.firstWhere(
         (cat) => cat['name'] == 'Music',
         orElse: () => null,
       );
 
-      if (binaural != null && binaural['types'] != null) {
-        final typesList = binaural['types'] as List<dynamic>;
+      if (musicCategory != null && musicCategory['types'] != null) {
+        final typesList = musicCategory['types'] as List<dynamic>;
         return typesList
             .map((typeJson) => Category.fromJson(typeJson))
             .toList();
@@ -39,7 +39,33 @@ class MusicController {
         return [];
       }
     } else {
-      throw Exception('Failed to fetch binaural types');
+      throw Exception('Failed to fetch music categories');
+    }
+  }
+
+  // Fetch all music items
+  Future<List<MusicItem>> fetchAllMusic() async {
+    final response =
+        await http.get(Uri.parse('${ApiConstants.resolvedApiUrl}/music'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => MusicItem.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch music');
+    }
+  }
+
+  // Fetch music by category
+  Future<List<MusicItem>> fetchMusicByCategory(String categoryId) async {
+    final response = await http.get(
+        Uri.parse('${ApiConstants.resolvedApiUrl}/music/category/$categoryId'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((json) => MusicItem.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch music by category');
     }
   }
 }

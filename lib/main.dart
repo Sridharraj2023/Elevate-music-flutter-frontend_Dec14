@@ -109,6 +109,7 @@ import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'View/Screens/Homepage_Screen.dart';
 import 'services/notification_service.dart';
+import 'utlis/api_test_mysql.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -126,9 +127,9 @@ void main() async {
   print("Resolved API URL: ${ApiConstants.apiUrl}");
   print("Resolved Stripe Publishable Key: ${ApiConstants.publishKey}");
 
-  // Force use production Render server for music and images
-  ApiConstants.useProductionServer();
-  print("Using production Render server: ${ApiConstants.resolvedApiUrl}");
+  // Use local MySQL backend for development
+  ApiConstants.useLocalServer();
+  print("Using local MySQL backend: ${ApiConstants.resolvedApiUrl}");
 
   // Use API URL from ApiConstants (reads from .env or uses default)
   print("Final resolved API URL: ${ApiConstants.resolvedApiUrl}");

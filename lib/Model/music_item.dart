@@ -22,8 +22,8 @@ class MusicItem {
   // Convert JSON response into MusicItem object
   factory MusicItem.fromJson(Map<String, dynamic> json) {
     return MusicItem(
-      id: json["_id"],
-      title: json["title"],
+      id: json["id"] ?? json["_id"] ?? "",
+      title: json["title"] ?? "",
       artist: json["artist"] ?? "Unknown Artist",
       fileUrl: json["fileUrl"] ?? "",
       duration: json["duration"] ?? 0,
@@ -48,7 +48,7 @@ class Category {
   // Convert JSON response into Category object
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: json["_id"] ?? "",
+      id: json["id"] ?? json["_id"] ?? "",
       name: json["name"] ?? "",
       description: json["description"] ?? "",
     );
@@ -66,10 +66,10 @@ class CategoryType {
     required this.description,
   });
 
-  // Convert JSON response into Category object
+  // Convert JSON response into CategoryType object
   factory CategoryType.fromJson(Map<String, dynamic> json) {
     return CategoryType(
-      id: json["_id"] ?? "",
+      id: json["id"] ?? json["_id"] ?? "",
       name: json["name"] ?? "",
       description: json["description"] ?? "",
     );

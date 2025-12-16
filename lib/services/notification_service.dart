@@ -314,9 +314,13 @@ class NotificationService {
 
       if (response.statusCode == 200) {
         print('Notification preferences updated successfully');
+      } else if (response.statusCode == 401) {
+        print('Failed to update notification preferences: 401 - Token expired');
+        throw Exception('Authentication failed. Please log in again.');
       } else {
         print(
             'Failed to update notification preferences: ${response.statusCode}');
+        throw Exception('Failed to update preferences');
       }
     } catch (e) {
       print('Error updating notification preferences: $e');
@@ -341,6 +345,9 @@ class NotificationService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return data['preferences'];
+      } else if (response.statusCode == 401) {
+        print('Failed to get notification preferences: 401 - Token expired');
+        return null;
       } else {
         print('Failed to get notification preferences: ${response.statusCode}');
         return null;

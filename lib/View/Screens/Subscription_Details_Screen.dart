@@ -247,7 +247,8 @@ class _SubscriptionDetailsScreenState extends State<SubscriptionDetailsScreen> {
       } catch (_) {}
       if (fullStatus['subscription'] != null) {
         final subscription = fullStatus['subscription'];
-        final backendPayment = subscription['currentPeriodStart'] ??
+        final backendPayment = subscription['paymentDate'] ??
+            subscription['currentPeriodStart'] ??
             subscription['current_period_start'] ??
             subscription['lastPaymentAt'] ??
             subscription['last_payment_at'] ??
@@ -257,7 +258,9 @@ class _SubscriptionDetailsScreenState extends State<SubscriptionDetailsScreen> {
             fullStatus['lastPaymentAt'] ??
             fullStatus['last_payment_at'];
 
+        print('Backend payment raw value: $backendPayment');
         final parsedPayment = _coerceToDateTime(backendPayment);
+        print('Parsed payment date: $parsedPayment');
         if (parsedPayment != null) {
           paymentDate = parsedPayment;
           print('Payment date from backend: $paymentDate');

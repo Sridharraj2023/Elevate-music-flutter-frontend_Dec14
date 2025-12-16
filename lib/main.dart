@@ -127,9 +127,9 @@ void main() async {
   print("Resolved API URL: ${ApiConstants.apiUrl}");
   print("Resolved Stripe Publishable Key: ${ApiConstants.publishKey}");
 
-  // Use local MySQL backend for development
-  ApiConstants.useLocalServer();
-  print("Using local MySQL backend: ${ApiConstants.resolvedApiUrl}");
+  // Use API URL from .env file (no override)
+  // ApiConstants.useLocalServer(); // Commented out to use .env file
+  print("Using API URL from .env: ${ApiConstants.resolvedApiUrl}");
 
   // Use API URL from ApiConstants (reads from .env or uses default)
   print("Final resolved API URL: ${ApiConstants.resolvedApiUrl}");

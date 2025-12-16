@@ -20,6 +20,11 @@ class AuthController {
     log("API URL: $baseUrl");
     log("Email: ${user.email}");
     log("Username: ${user.username}");
+    
+    print("=== SIGNUP DEBUG ===");
+    print("API URL: $baseUrl");
+    print("Email: ${user.email}");
+    print("Username: ${user.username}");
 
     try {
       var request = http.Request('POST', Uri.parse(baseUrl));
@@ -32,12 +37,15 @@ class AuthController {
       request.headers.addAll(headers);
       
       log("Request body: ${request.body}");
+      print("Request body: ${request.body}");
 
       http.StreamedResponse response = await request.send();
       log("Response status: ${response.statusCode}");
+      print("Response status: ${response.statusCode}");
       
       String responseBody = await response.stream.bytesToString();
       log("Response body: $responseBody");
+      print("Response body: $responseBody");
 
       if (response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -70,6 +78,8 @@ class AuthController {
       }
     } catch (e) {
       log("Signup error: $e");
+      print("SIGNUP ERROR: $e");
+      print("Error type: ${e.runtimeType}");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Network error: $e"),

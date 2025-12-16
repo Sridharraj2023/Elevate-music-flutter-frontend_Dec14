@@ -39,7 +39,7 @@ class ApiConstants {
 
   // Convenience methods for switching between environments
   static void useLocalServer() {
-    setApiUrlOverride("http://localhost:5000/api");
+    setApiUrlOverride("http://192.168.0.101:5000/api");
   }
 
   static void useProductionServer() {

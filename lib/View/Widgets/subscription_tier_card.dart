@@ -37,12 +37,12 @@ class SubscriptionTierCard extends StatelessWidget {
             SizedBox(height: 8),
             FeatureRow(
               label: 'Monthly Cost: ',
-              value: tier.monthlyCost,
+              value: tier.formattedMonthlyCost,
               isEmphasized: selectedBillingPeriod == 'monthly',
             ),
             FeatureRow(
               label: 'Annual Cost: ',
-              value: tier.annualCost,
+              value: tier.formattedAnnualCost,
               isEmphasized: selectedBillingPeriod == 'yearly',
             ),
             FeatureRow(label: 'Ad Supported:', value: tier.adSupported),

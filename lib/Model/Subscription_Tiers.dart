@@ -3,6 +3,8 @@ class SubscriptionTier {
   final String title;
   final String monthlyCost;
   final String annualCost;
+  final double monthlyPrice;
+  final double yearlyPrice;
   final String adSupported;
   final String audioFileType;
   final String offlineDownloads;
@@ -18,6 +20,8 @@ class SubscriptionTier {
     required this.title,
     required this.monthlyCost,
     required this.annualCost,
+    required this.monthlyPrice,
+    required this.yearlyPrice,
     required this.adSupported,
     required this.audioFileType,
     required this.offlineDownloads,
@@ -29,4 +33,10 @@ class SubscriptionTier {
     required this.monthlyPriceId,
     required this.yearlyPriceId,
   });
+
+  // Helper methods to get formatted prices
+  String get formattedMonthlyPrice => '\$${monthlyPrice.toStringAsFixed(2)}';
+  String get formattedYearlyPrice => '\$${yearlyPrice.toStringAsFixed(2)}';
+  String get formattedMonthlyCost => monthlyCost.isNotEmpty ? monthlyCost : formattedMonthlyPrice;
+  String get formattedAnnualCost => annualCost.isNotEmpty ? annualCost : formattedYearlyPrice;
 }

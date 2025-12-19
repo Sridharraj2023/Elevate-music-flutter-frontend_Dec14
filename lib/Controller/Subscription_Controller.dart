@@ -41,7 +41,7 @@ class SubscriptionController {
 
     try {
       final response = await http.get(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/subscription-plans/current"),
+        Uri.parse("${ApiConstants.apiUrl}/subscription-plans/current"),
         headers: {"Content-Type": "application/json"},
       );
 
@@ -51,24 +51,48 @@ class SubscriptionController {
           final planData = data['data'];
 
           // Convert backend data to SubscriptionTier format
+          // Parse string values to double
+          double monthlyPrice = 0.0;
+          double yearlyPrice = 0.0;
+          
+          try {
+            if (planData['monthlyCost'] is String) {
+              monthlyPrice = double.parse(planData['monthlyCost']);
+            } else if (planData['monthlyCost'] is num) {
+              monthlyPrice = (planData['monthlyCost'] as num).toDouble();
+            }
+          } catch (e) {
+            print("Error parsing monthlyCost: $e");
+            monthlyPrice = 0.0;
+          }
+          
+          try {
+            if (planData['annualCost'] is String) {
+              yearlyPrice = double.parse(planData['annualCost']);
+            } else if (planData['annualCost'] is num) {
+              yearlyPrice = (planData['annualCost'] as num).toDouble();
+            }
+          } catch (e) {
+            print("Error parsing annualCost: $e");
+            yearlyPrice = 0.0;
+          }
+          
           final tier = SubscriptionTier(
-            title: planData['title'] ?? 'Standard',
-            monthlyCost: planData['monthlyCost'] ?? '\$5.00',
-            annualCost: planData['annualCost'] ?? '\$54.00',
-            adSupported: planData['adSupported'] ?? 'No',
-            audioFileType: planData['audioFileType'] ?? '320 kbps MP3',
-            offlineDownloads: planData['offlineDownloads'] ?? '0',
-            binauralTracks: planData['binauralTracks'] ?? '3 Every',
-            soundscapeTracks: planData['soundscapeTracks'] ?? 'All',
-            dynamicAudioFeatures: planData['dynamicAudioFeatures'] ?? 'No',
-            customTrackRequests: planData['customTrackRequests'] ?? 'No',
-            priceId: planData['priceId'] ?? ApiConstants.priceId,
-            monthlyPriceId: planData['monthlyPriceId'] ??
-                planData['priceId'] ??
-                ApiConstants.priceId,
-            yearlyPriceId: planData['yearlyPriceId'] ??
-                planData['priceId'] ??
-                ApiConstants.priceId,
+            title: planData['title'] ?? '',
+            monthlyCost: '\$${monthlyPrice.toStringAsFixed(2)}',
+            annualCost: '\$${yearlyPrice.toStringAsFixed(2)}',
+            monthlyPrice: monthlyPrice,
+            yearlyPrice: yearlyPrice,
+            adSupported: planData['adSupported'] ?? '',
+            audioFileType: planData['audioFileType'] ?? '',
+            offlineDownloads: planData['offlineDownloads'] ?? '',
+            binauralTracks: planData['binauralTracks'] ?? '',
+            soundscapeTracks: planData['soundscapeTracks'] ?? '',
+            dynamicAudioFeatures: planData['dynamicAudioFeatures'] ?? '',
+            customTrackRequests: planData['customTrackRequests'] ?? '',
+            priceId: planData['stripePriceId'] ?? '',
+            monthlyPriceId: planData['stripeMonthlyPriceId'] ?? '',
+            yearlyPriceId: planData['stripeYearlyPriceId'] ?? '',
           );
 
           _cachedTiers = [tier];
@@ -82,26 +106,8 @@ class SubscriptionController {
       }
     } catch (e) {
       print("Error loading subscription tiers: $e");
-
-      // Fallback to hardcoded values if API fails
-      final fallbackTier = SubscriptionTier(
-        title: 'Premium Sep 25',
-        monthlyCost: '\$30.00',
-        annualCost: '\$330.00',
-        adSupported: 'No',
-        audioFileType: '320 kbps MF3',
-        offlineDownloads: '0',
-        binauralTracks: '4 Every',
-        soundscapeTracks: 'All',
-        dynamicAudioFeatures: 'No',
-        customTrackRequests: 'No',
-        priceId: ApiConstants.priceId,
-        monthlyPriceId: ApiConstants.priceId,
-        yearlyPriceId: ApiConstants.priceId,
-      );
-
-      _cachedTiers = [fallbackTier];
-      return _cachedTiers;
+      _cachedTiers = [];
+      rethrow;
     } finally {
       _isLoadingTiers = false;
     }
@@ -122,7 +128,7 @@ class SubscriptionController {
 
       // Call your backend API to create subscription
       final response = await http.post(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/subscriptions/create"),
+        Uri.parse("${ApiConstants.apiUrl}/subscriptions/create"),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
@@ -315,7 +321,7 @@ class SubscriptionController {
     }
 
     final response = await http.get(
-      Uri.parse("${ApiConstants.resolvedApiUrl}/users/billing"),
+      Uri.parse("${ApiConstants.apiUrl}/users/billing"),
       headers: {
         "Authorization": "Bearer $token",
       },
@@ -351,7 +357,7 @@ class SubscriptionController {
 
       // Request a SetupIntent client secret from backend
       final setupIntentResp = await http.post(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/payments/setup-intent"),
+        Uri.parse("${ApiConstants.apiUrl}/payments/setup-intent"),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",
@@ -419,7 +425,7 @@ class SubscriptionController {
     }
 
     final resp = await http.put(
-      Uri.parse("${ApiConstants.resolvedApiUrl}/subscriptions/auto-debit"),
+      Uri.parse("${ApiConstants.apiUrl}/subscriptions/auto-debit"),
       headers: {
         "Authorization": "Bearer $token",
         "Content-Type": "application/json",
@@ -453,7 +459,7 @@ class SubscriptionController {
 
       // Call your backend API to check subscription status
       final response = await http.get(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/subscriptions/status"),
+        Uri.parse("${ApiConstants.apiUrl}/subscriptions/status"),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
@@ -515,7 +521,7 @@ class SubscriptionController {
           try {
             final fixResponse = await http.post(
               Uri.parse(
-                  "${ApiConstants.resolvedApiUrl}/subscriptions/fix-status"),
+                  "${ApiConstants.apiUrl}/subscriptions/fix-status"),
               headers: {
                 "Authorization": "Bearer $token",
               },
@@ -542,7 +548,7 @@ class SubscriptionController {
         try {
           final fixResponse = await http.post(
             Uri.parse(
-                "${ApiConstants.resolvedApiUrl}/subscriptions/fix-status"),
+                "${ApiConstants.apiUrl}/subscriptions/fix-status"),
             headers: {
               "Authorization": "Bearer $token",
             },
@@ -612,7 +618,7 @@ class SubscriptionController {
       }
 
       final response = await http.get(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/subscriptions/status"),
+        Uri.parse("${ApiConstants.apiUrl}/subscriptions/status"),
         headers: {
           "Authorization": "Bearer $token",
         },
@@ -648,7 +654,7 @@ class SubscriptionController {
 
       final response = await http.post(
         Uri.parse(
-            "${ApiConstants.resolvedApiUrl}/subscriptions/update-payment-method"),
+            "${ApiConstants.apiUrl}/subscriptions/update-payment-method"),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json"
@@ -709,7 +715,7 @@ class SubscriptionController {
       }
 
       final response = await http.post(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/subscriptions/fix-status"),
+        Uri.parse("${ApiConstants.apiUrl}/subscriptions/fix-status"),
         headers: {
           "Authorization": "Bearer $token",
         },
@@ -756,7 +762,7 @@ class SubscriptionController {
       }
 
       final response = await http.post(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/subscriptions/confirm"),
+        Uri.parse("${ApiConstants.apiUrl}/subscriptions/confirm"),
         headers: {
           "Authorization": "Bearer $token",
         },
@@ -805,7 +811,7 @@ class SubscriptionController {
       }
 
       final response = await http.post(
-        Uri.parse("${ApiConstants.resolvedApiUrl}/subscriptions/cancel"),
+        Uri.parse("${ApiConstants.apiUrl}/subscriptions/cancel"),
         headers: {
           "Authorization": "Bearer $token",
         },

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Elevate Admin - Subscription Plans</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007cba; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #005a87; }
+        .success { color: green; margin: 10px 0; }
+        .error { color: red; margin: 10px 0; }
+        .current-prices { background: #f5f5f5; padding: 15px; border-radius: 4px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Elevate Admin - Subscription Plan Management</h1>
+        
+        <div class="current-prices">
+            <h3>Current Plan Details</h3>
+            <p><strong>Title:</strong> <span id="currentTitle">Loading...</span></p>
+            <p><strong>Monthly Cost:</strong> $<span id="currentMonthly">0.00</span></p>
+            <p><strong>Annual Cost:</strong> $<span id="currentAnnual">0.00</span></p>
+            <p><strong>Monthly Price ID:</strong> <span id="currentMonthlyId">-</span></p>
+            <p><strong>Yearly Price ID:</strong> <span id="currentYearlyId">-</span></p>
+        </div>
+
+        <form id="planForm">
+            <div class="form-group">
+                <label for="title">Plan Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="monthlyCost">Monthly Cost ($):</label>
+                <input type="number" id="monthlyCost" name="monthlyCost" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="annualCost">Annual Cost ($):</label>
+                <input type="number" id="annualCost" name="annualCost" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="adSupported">Ad Supported:</label>
+                <select id="adSupported" name="adSupported">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="audioFileType">Audio File Type:</label>
+                <input type="text" id="audioFileType" name="audioFileType">
+            </div>
+
+            <div class="form-group">
+                <label for="offlineDownloads">Offline Downloads:</label>
+                <input type="text" id="offlineDownloads" name="offlineDownloads">
+            </div>
+
+            <div class="form-group">
+                <label for="binauralTracks">Binaural Tracks:</label>
+                <input type="text" id="binauralTracks" name="binauralTracks">
+            </div>
+
+            <div class="form-group">
+                <label for="soundscapeTracks">Soundscape Tracks:</label>
+                <input type="text" id="soundscapeTracks" name="soundscapeTracks">
+            </div>
+
+            <button type="submit">Update Plan & Sync with Stripe</button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://your-api-url.com/api';
+        const PLAN_ID = '470c8d23-95e5-4c26-82b9-8d1780594c3e'; // Your plan ID
+
+        // Load current plan data
+        async function loadPlan() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/subscription-plans/${PLAN_ID}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const plan = data.data;
+                    
+                    // Update current display
+                    document.getElementById('currentTitle').textContent = plan.title;
+                    document.getElementById('currentMonthly').textContent = plan.monthlyCost;
+                    document.getElementById('currentAnnual').textContent = plan.annualCost;
+                    document.getElementById('currentMonthlyId').textContent = plan.stripeMonthlyPriceId || '-';
+                    document.getElementById('currentYearlyId').textContent = plan.stripeYearlyPriceId || '-';
+                    
+                    // Fill form
+                    document.getElementById('title').value = plan.title;
+                    document.getElementById('monthlyCost').value = plan.monthlyCost;
+                    document.getElementById('annualCost').value = plan.annualCost;
+                    document.getElementById('adSupported').value = plan.adSupported;
+                    document.getElementById('audioFileType').value = plan.audioFileType;
+                    document.getElementById('offlineDownloads').value = plan.offlineDownloads;
+                    document.getElementById('binauralTracks').value = plan.binauralTracks;
+                    document.getElementById('soundscapeTracks').value = plan.soundscapeTracks;
+                }
+            } catch (error) {
+                showMessage('Error loading plan: ' + error.message, 'error');
+            }
+        }
+
+        // Update plan
+        document.getElementById('planForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const planData = Object.fromEntries(formData);
+            
+            // Convert string numbers to floats
+            planData.monthlyCost = parseFloat(planData.monthlyCost);
+            planData.annualCost = parseFloat(planData.annualCost);
+            
+            try {
+                showMessage('Updating plan and syncing with Stripe...', 'info');
+                
+                const response = await fetch(`${API_BASE}/admin/subscription-plans/${PLAN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(planData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('Plan updated successfully! New Stripe Price IDs created.', 'success');
+                    loadPlan(); // Reload to show updated data
+                } else {
+                    showMessage('Error: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showMessage('Error updating plan: ' + error.message, 'error');
+            }
+        });
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = type;
+        }
+
+        // Load plan on page load
+        loadPlan();
+    </script>
+</body>
+</html>

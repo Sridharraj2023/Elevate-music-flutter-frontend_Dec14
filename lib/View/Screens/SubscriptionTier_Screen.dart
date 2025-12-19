@@ -333,6 +333,16 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
                                 ? tiers[0].yearlyPriceId
                                 : tiers[0].monthlyPriceId;
 
+                            // Validate price ID exists
+                            if (priceId.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Subscription plan not configured. Please contact support.')),
+                              );
+                              return;
+                            }
+
                             // Debug logging
                             print(
                                 "Selected billing period: $selectedBillingPeriod");
@@ -368,9 +378,11 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
                         ),
                         elevation: 5,
                       ),
-                      child: const Text(
-                        'Subscribe Now',
-                        style: TextStyle(
+                      child: Text(
+                        tiers.isNotEmpty
+                            ? 'Subscribe Now - ${selectedBillingPeriod == 'yearly' ? tiers[0].formattedAnnualCost : tiers[0].formattedMonthlyCost}'
+                            : 'Subscribe Now',
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -450,6 +462,17 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
         String priceId = selectedBillingPeriod == 'yearly'
             ? tier.yearlyPriceId
             : tier.monthlyPriceId;
+
+        // Validate price ID exists
+        if (priceId.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text(
+                    'Subscription plan not configured. Please contact support.')),
+          );
+          return;
+        }
+
         await _subscriptionController.createSubscription(context, priceId);
       } catch (e) {
         print("Tier tap error: $e");

@@ -1,5 +1,5 @@
 class MusicItem {
-  final String id;
+  final int id;
   final String title;
   final String artist;
   final String fileUrl;
@@ -22,7 +22,7 @@ class MusicItem {
   // Convert JSON response into MusicItem object
   factory MusicItem.fromJson(Map<String, dynamic> json) {
     return MusicItem(
-      id: json["id"] ?? json["_id"] ?? "",
+      id: json["id"] ?? json["_id"] ?? 0,
       title: json["title"] ?? "",
       artist: json["artist"] ?? "Unknown Artist",
       fileUrl: json["fileUrl"] ?? "",
@@ -35,7 +35,7 @@ class MusicItem {
 }
 
 class Category {
-  final String id;
+  final int id;
   final String name;
   final String description;
 
@@ -48,7 +48,7 @@ class Category {
   // Convert JSON response into Category object
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: json["id"] ?? json["_id"] ?? "",
+      id: json["id"] ?? json["_id"] ?? 0,
       name: json["name"] ?? "",
       description: json["description"] ?? "",
     );
@@ -56,7 +56,7 @@ class Category {
 }
 
 class CategoryType {
-  final String id;
+  final int id;
   final String name;
   final String description;
 
@@ -69,7 +69,7 @@ class CategoryType {
   // Convert JSON response into CategoryType object
   factory CategoryType.fromJson(Map<String, dynamic> json) {
     return CategoryType(
-      id: json["id"] ?? json["_id"] ?? "",
+      id: json["id"] ?? json["_id"] ?? 0,
       name: json["name"] ?? "",
       description: json["description"] ?? "",
     );

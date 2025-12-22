@@ -57,7 +57,7 @@ class MusicController {
   }
 
   // Fetch music by category
-  Future<List<MusicItem>> fetchMusicByCategory(String categoryId) async {
+  Future<List<MusicItem>> fetchMusicByCategory(int categoryId) async {
     final response = await http.get(
         Uri.parse('${ApiConstants.resolvedApiUrl}/music/category/$categoryId'));
 

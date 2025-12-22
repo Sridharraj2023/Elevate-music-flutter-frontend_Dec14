@@ -1,6 +1,6 @@
 // models/user.dart
 class User {
-  final String? id;
+  final int? id;
   final String username;
   final String email;
   final String password;
@@ -17,7 +17,7 @@ class User {
   // Convert JSON response into User object
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json["id"] ?? json["_id"] ?? "",
+      id: json["id"] ?? json["_id"],
       username: json["name"] ?? json["username"] ?? "",
       email: json["email"] ?? "",
       password: "", // Never expose password from API

@@ -111,14 +111,14 @@ class AuthController {
         String token = responseData["token"] ?? ""; // JWT token from API
         String name = responseData["name"] ?? "";
         String email = responseData["email"] ?? "";
-        String id = responseData["id"] ?? responseData["_id"] ?? "";
+        int id = responseData["id"] ?? responseData["_id"] ?? 0;
 
         // Save token to local storage for future authenticated requests
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('auth_token', token);
         await prefs.setString('name', name);
         await prefs.setString('email', email);
-        await prefs.setString('id', id);
+        await prefs.setInt('id', id);
 
         // Show login success message
         ScaffoldMessenger.of(context).showSnackBar(

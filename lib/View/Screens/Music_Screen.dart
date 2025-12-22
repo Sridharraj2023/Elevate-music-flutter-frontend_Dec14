@@ -95,7 +95,7 @@ class MusicPage extends StatelessWidget {
                                 onTap: () {
                                   Get.to(
                                     BinauralSongsScreen(
-                                      typeId: type.id,
+                                      typeId: type.id.toString(),
                                       typeName: type.name,
                                     ),
                                   );

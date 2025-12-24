@@ -22,11 +22,11 @@ class MusicItem {
   // Convert JSON response into MusicItem object
   factory MusicItem.fromJson(Map<String, dynamic> json) {
     return MusicItem(
-      id: json["id"] ?? json["_id"] ?? 0,
+      id: int.tryParse(json["id"]?.toString() ?? "") ?? json["_id"] ?? 0,
       title: json["title"] ?? "",
       artist: json["artist"] ?? "Unknown Artist",
       fileUrl: json["fileUrl"] ?? "",
-      duration: json["duration"] ?? 0,
+      duration: int.tryParse(json["duration"]?.toString() ?? "") ?? 0,
       imageUrl: json["thumbnailUrl"] ?? "",
       categoryType: CategoryType.fromJson(json["categoryType"] ?? {}),
       category: Category.fromJson(json["category"] ?? {}),
@@ -48,7 +48,7 @@ class Category {
   // Convert JSON response into Category object
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: json["id"] ?? json["_id"] ?? 0,
+      id: int.tryParse(json["id"]?.toString() ?? "") ?? json["_id"] ?? 0,
       name: json["name"] ?? "",
       description: json["description"] ?? "",
     );
@@ -69,7 +69,7 @@ class CategoryType {
   // Convert JSON response into CategoryType object
   factory CategoryType.fromJson(Map<String, dynamic> json) {
     return CategoryType(
-      id: json["id"] ?? json["_id"] ?? 0,
+      id: int.tryParse(json["id"]?.toString() ?? "") ?? json["_id"] ?? 0,
       name: json["name"] ?? "",
       description: json["description"] ?? "",
     );

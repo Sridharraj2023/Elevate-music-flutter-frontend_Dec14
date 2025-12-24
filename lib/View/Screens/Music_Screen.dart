@@ -94,7 +94,7 @@ class MusicPage extends StatelessWidget {
                               return InkWell(
                                 onTap: () {
                                   Get.to(
-                                    BinauralSongsScreen(
+                                    MusicSongsScreen(
                                       typeId: type.id.toString(),
                                       typeName: type.name,
                                     ),

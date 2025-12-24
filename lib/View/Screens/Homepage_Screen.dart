@@ -372,12 +372,27 @@ class _HomePageState extends State<HomePage>
 
                   // TabBarView
                   Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
+                    child: Stack(
                       children: [
-                        _buildHomeTab(),
-                        _buildNavigator(BinauralPage()),
-                        _buildNavigator(MusicPage()),
+                        TabBarView(
+                          controller: _tabController,
+                          children: [
+                            _buildHomeTab(),
+                            _buildNavigator(BinauralPage()),
+                            _buildNavigator(MusicPage()),
+                          ],
+                        ),
+                        // Add player at bottom of all tabs
+                        if (_musicItems2 != null && _binauralItems2 != null)
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: AudioPlayerWidget(
+                              musicList: _musicItems2!,
+                              binauralList: _binauralItems2!,
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -425,14 +440,22 @@ class _HomePageState extends State<HomePage>
             FutureBuilder<List<MusicItem>>(
               future: _binauralItems,
               builder: (context, snapshot) {
+                print("Binaural FutureBuilder - State: ${snapshot.connectionState}, HasData: ${snapshot.hasData}, Data: ${snapshot.data?.length}");
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError || snapshot.data!.isEmpty) {
+                } else if (snapshot.hasError) {
+                  print("Binaural Error: ${snapshot.error}");
                   return Center(
-                      child: Text("No music available",
+                      child: Text("Error: ${snapshot.error}",
+                          style: TextStyle(color: Colors.white)));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  print("Binaural: No data or empty list");
+                  return Center(
+                      child: Text("No binaural music available",
                           style: TextStyle(color: Colors.white)));
                 }
 
+                print("Binaural: Displaying ${snapshot.data!.length} items");
                 return MusicList(items: snapshot.data!, isBinaural: true);
               },
             ),
@@ -446,24 +469,28 @@ class _HomePageState extends State<HomePage>
             FutureBuilder<List<MusicItem>>(
               future: _musicItems,
               builder: (context, snapshot) {
+                print("Music FutureBuilder - State: ${snapshot.connectionState}, HasData: ${snapshot.hasData}, Data: ${snapshot.data?.length}");
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError || snapshot.data!.isEmpty) {
+                } else if (snapshot.hasError) {
+                  print("Music Error: ${snapshot.error}");
+                  return Center(
+                      child: Text("Error: ${snapshot.error}",
+                          style: TextStyle(color: Colors.white)));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  print("Music: No data or empty list");
                   return Center(
                       child: Text("No music available",
                           style: TextStyle(color: Colors.white)));
                 }
 
+                print("Music: Displaying ${snapshot.data!.length} items");
                 return MusicList(items: snapshot.data!, isBinaural: false);
               },
             ),
             // Player widget - scrolls with content (only visible when playing)
             const SizedBox(height: 16),
-            if (_musicItems2 != null && _binauralItems2 != null)
-              AudioPlayerWidget(
-                musicList: _musicItems2!,
-                binauralList: _binauralItems2!,
-              ),
+            // Remove player from home tab since it's now at bottom of all tabs
           ],
         ),
       ),

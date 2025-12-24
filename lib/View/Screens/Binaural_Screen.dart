@@ -148,7 +148,7 @@ class BinauralSongsScreen extends StatelessWidget {
       Get.find<BottomBarController>();
 
   Future<List<MusicItem>> fetchSongsByType(String id) async {
-    return await ApiService.fetchAllMusic(id);
+    return await ApiService.fetchAllMusic(id, categoryName: 'Binaural');
   }
 
   @override
@@ -404,36 +404,211 @@ class ApiService {
   //   }
   // }
 
-  static Future<List<MusicItem>> fetchAllMusic(String typeId) async {
+  static Future<List<MusicItem>> fetchAllMusic(String typeId, {String? categoryName}) async {
     final String baseUrl = "${ApiConstants.apiUrl}/music";
 
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('auth_token');
-
-      if (token == null)
-        throw Exception("User not authenticated. No token found.");
-
-      final headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
+      print("ApiService: Fetching music for typeId: $typeId, categoryName: $categoryName");
+      final headers = {'Content-Type': 'application/json'};
 
       final response = await http.get(Uri.parse(baseUrl), headers: headers);
+      print("ApiService: Response status: ${response.statusCode}");
 
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = jsonDecode(response.body);
+        print("ApiService: Total music items: ${jsonResponse.length}");
+        
+        if (jsonResponse.isNotEmpty) {
+          print("ApiService: First item JSON: ${jsonResponse[0]}");
+        }
+        
         final cachedAllMusic =
             jsonResponse.map((data) => MusicItem.fromJson(data)).toList();
-        return cachedAllMusic
-            .where((item) => item.categoryType.id == typeId)
+        
+        final filtered = cachedAllMusic
+            .where((item) {
+              print("ApiService: Checking item '${item.title}' - category: ${item.category.name}, categoryType.id: ${item.categoryType.id} vs typeId: $typeId");
+              // Filter by categoryType AND optionally by category name
+              bool matchesType = item.categoryType.id.toString() == typeId;
+              bool matchesCategory = categoryName == null || item.category.name == categoryName;
+              return matchesType && matchesCategory;
+            })
             .toList();
+        
+        print("ApiService: Filtered items for typeId $typeId: ${filtered.length}");
+        return filtered;
       } else {
         throw Exception("Failed to load music: ${response.statusCode}");
       }
     } catch (e) {
-      print("Error fetching music: $e");
+      print("ApiService: Error fetching music: $e");
       return [];
     }
+  }
+}
+
+
+// Music Songs Screen (similar to Binaural but filters by Music category)
+class MusicSongsScreen extends StatelessWidget {
+  final String typeId;
+  final String typeName;
+
+  MusicSongsScreen({
+    super.key,
+    required this.typeId,
+    required this.typeName,
+  });
+
+  final BottomBarController bottomBarController =
+      Get.find<BottomBarController>();
+
+  Future<List<MusicItem>> fetchSongsByType(String id) async {
+    return await ApiService.fetchAllMusic(id, categoryName: 'Music');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SubscriptionGuard(
+      customMessage: 'Please subscribe to access music',
+      child: Scaffold(
+        body: GradientContainer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Get.back(),
+                      child: const Icon(Icons.arrow_back_ios_new,
+                          color: Colors.white),
+                    ),
+                    const SizedBox(width: 46),
+                    Expanded(
+                      child: Text(
+                        typeName,
+                        style: const TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              Expanded(
+                child: FutureBuilder<List<MusicItem>>(
+                  future: fetchSongsByType(typeId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Text(
+                          'No songs found for "$typeName"',
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+                      );
+                    }
+
+                    final songs = snapshot.data!;
+                    return ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 136),
+                      itemCount: songs.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 16),
+                      itemBuilder: (context, index) {
+                        final song = songs[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Get.back();
+                            log(song.fileUrl);
+                            bottomBarController.isMusicPlaying.value = true;
+                            bottomBarController.playMusic(song.fileUrl);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.1),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(16),
+                                          bottomLeft: Radius.circular(16)),
+                                      child: Image.asset(
+                                        'assets/images/music_bg.jpg',
+                                        width: 80,
+                                        height: 80,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                const Icon(Icons.music_note,
+                                                    color: Colors.white,
+                                                    size: 80),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          song.title,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          song.artist,
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const Icon(Icons.play_circle_fill,
+                                    size: 36, color: Colors.white70),
+                                const SizedBox(width: 10)
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

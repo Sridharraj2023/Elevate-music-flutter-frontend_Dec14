@@ -94,27 +94,22 @@ class HomeController {
 
     try {
       print("HomeController: Fetching music from API: $baseUrl");
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('auth_token');
-
-      if (token == null) {
-        print("HomeController: No auth token found");
-        throw Exception("User not authenticated. No token found.");
-      }
-
-      print("HomeController: Auth token found: ${token.substring(0, 20)}...");
-
-      final headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
-      print("HomeController: Making API request to: $baseUrl");
+      
+      // Test without authentication first
+      Map<String, String> headers = {'Content-Type': 'application/json'};
+      
+      print("HomeController: Making API request WITHOUT auth to: $baseUrl");
       final response = await http.get(Uri.parse(baseUrl), headers: headers);
 
       print("HomeController: API response status: ${response.statusCode}");
-      print(
-          "HomeController: API response body: ${response.body.substring(0, 200)}...");
+      if (response.body.isNotEmpty) {
+        print("HomeController: API response body length: ${response.body.length}");
+        if (response.body.length > 100) {
+          print("HomeController: API response body preview: ${response.body.substring(0, 100)}...");
+        } else {
+          print("HomeController: API response body: ${response.body}");
+        }
+      }
 
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = jsonDecode(response.body);

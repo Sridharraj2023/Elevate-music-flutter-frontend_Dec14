@@ -585,10 +585,11 @@ class BottomBarController extends GetxController {
     musicPlaylist.value = music.map((item) => item.fileUrl).toList();
     musicPlaylists.value = music;
 
-    // Debug: Print first few music URLs and test them
+    // Debug: Print first few music URLs
     for (int i = 0; i < music.length && i < 3; i++) {
       print("Music $i: ${music[i].title} - ${music[i].fileUrl}");
-      _testAudioUrl(music[i].fileUrl, "Music ${music[i].title}");
+      final convertedUrl = _convertToProductionUrl(music[i].fileUrl);
+      print("   Converted to: $convertedUrl");
     }
   }
 
@@ -714,10 +715,11 @@ class BottomBarController extends GetxController {
     binauralPlaylist.value = binaural.map((item) => item.fileUrl).toList();
     binauralPlaylists.value = binaural;
 
-    // Debug: Print first few binaural URLs and test them
+    // Debug: Print first few binaural URLs
     for (int i = 0; i < binaural.length && i < 3; i++) {
       print("Binaural $i: ${binaural[i].title} - ${binaural[i].fileUrl}");
-      _testAudioUrl(binaural[i].fileUrl, "Binaural ${binaural[i].title}");
+      final convertedUrl = _convertToProductionUrl(binaural[i].fileUrl);
+      print("   Converted to: $convertedUrl");
     }
   }
 

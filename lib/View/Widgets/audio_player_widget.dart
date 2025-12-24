@@ -48,7 +48,22 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
       const double _cardHeight = 146; // Increased to accommodate all content
 
-      return Container(
+      return GestureDetector(
+        onTap: () {
+          // Open full player based on which is currently selected
+          if (showMusic && bottomBarController.musicTrack.value.isNotEmpty) {
+            Get.to(() => FullAudioPlayerScreen(
+                  isBinaural: false,
+                  track: bottomBarController.musicTrack.value,
+                ));
+          } else if (!showMusic && bottomBarController.binauralTrack.value.isNotEmpty) {
+            Get.to(() => FullAudioPlayerScreen(
+                  isBinaural: true,
+                  track: bottomBarController.binauralTrack.value,
+                ));
+          }
+        },
+        child: Container(
         height: _cardHeight,
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -162,6 +177,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
             ],
           ),
         ),
+      ),
       );
     });
   }

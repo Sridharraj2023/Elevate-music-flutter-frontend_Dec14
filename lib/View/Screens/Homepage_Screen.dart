@@ -417,13 +417,15 @@ class _HomePageState extends State<HomePage>
 
   // Home Tab Content
   Widget _buildHomeTab() {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 20), // Extra bottom padding
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 170), // Extra space for player
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
             const SizedBox(height: 20),
             const Text(
               "Welcome! We're glad you're here.",
@@ -489,11 +491,12 @@ class _HomePageState extends State<HomePage>
               },
             ),
             // Player widget - scrolls with content (only visible when playing)
-            const SizedBox(height: 16),
-            // Remove player from home tab since it's now at bottom of all tabs
-          ],
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 

@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:elevate/Model/music_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Controller/BottomBar_Controller.dart';
-import '../../utils/responsive_helper.dart';
 import 'full_audio_player.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
@@ -46,7 +43,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           ? const Color(0xFF1E3A8A) // Deep blue
           : const Color(0xFF4C1D95); // Deep rich purple
 
-      const double _cardHeight = 146; // Increased to accommodate all content
+      const double cardHeight = 146; // Increased to accommodate all content
 
       return GestureDetector(
         onTap: () {
@@ -64,7 +61,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           }
         },
         child: Container(
-        height: _cardHeight,
+        height: cardHeight,
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
@@ -83,8 +80,8 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                 height: 32,
                 decoration: BoxDecoration(
                   color: showMusic
-                      ? const Color(0xFF1E40AF).withOpacity(0.4) // Darker blue with transparency
-                      : const Color(0xFF5B21B6).withOpacity(0.4), // Darker muted purple with transparency
+                      ? const Color(0xFF1E40AF).withValues(alpha: 0.4) // Darker blue with transparency
+                      : const Color(0xFF5B21B6).withValues(alpha: 0.4), // Darker muted purple with transparency
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16),
@@ -101,7 +98,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                             horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: !showMusic
-                              ? Colors.white.withOpacity(0.35)
+                              ? Colors.white.withValues(alpha: 0.35)
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -125,7 +122,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                             horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: showMusic
-                              ? Colors.white.withOpacity(0.35)
+                              ? Colors.white.withValues(alpha: 0.35)
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -163,7 +160,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withValues(alpha: 0.3),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -192,7 +189,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           // Track info
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF6366F1).withOpacity(0.25), // Lighter blue shade
+              color: const Color(0xFF6366F1).withValues(alpha: 0.25), // Lighter blue shade
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -307,7 +304,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                                 Duration(seconds: value.toInt()));
                           },
                           activeColor: const Color(0xFF6366F1), // Vibrant blue
-                          inactiveColor: Colors.white.withOpacity(0.3), // Muted grey
+                          inactiveColor: Colors.white.withValues(alpha: 0.3), // Muted grey
                         ),
                       ),
                       Text(
@@ -369,7 +366,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   min: 0,
                   max: 1,
                   activeColor: const Color(0xFF6366F1), // Vibrant blue
-                  inactiveColor: Colors.white.withOpacity(0.3), // Muted grey
+                  inactiveColor: Colors.white.withValues(alpha: 0.3), // Muted grey
                 ),
               ),
             ],
@@ -389,7 +386,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           // Track info
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF7C3AED).withOpacity(0.25), // Lighter purple shade
+              color: const Color(0xFF7C3AED).withValues(alpha: 0.25), // Lighter purple shade
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -505,7 +502,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                                 Duration(seconds: value.toInt()));
                           },
                           activeColor: const Color(0xFF8B5CF6), // Vibrant purple
-                          inactiveColor: Colors.white.withOpacity(0.3), // Muted grey
+                          inactiveColor: Colors.white.withValues(alpha: 0.3), // Muted grey
                         ),
                       ),
                       Text(
@@ -567,7 +564,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   min: 0,
                   max: 1,
                   activeColor: const Color(0xFF8B5CF6), // Vibrant purple
-                  inactiveColor: Colors.white.withOpacity(0.3), // Muted grey
+                  inactiveColor: Colors.white.withValues(alpha: 0.3), // Muted grey
                 ),
               ),
             ],

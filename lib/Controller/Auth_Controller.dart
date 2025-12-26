@@ -20,11 +20,6 @@ class AuthController {
     log("API URL: $baseUrl");
     log("Email: ${user.email}");
     log("Username: ${user.username}");
-    
-    print("=== SIGNUP DEBUG ===");
-    print("API URL: $baseUrl");
-    print("Email: ${user.email}");
-    print("Username: ${user.username}");
 
     try {
       var request = http.Request('POST', Uri.parse(baseUrl));
@@ -37,19 +32,16 @@ class AuthController {
       request.headers.addAll(headers);
       
       log("Request body: ${request.body}");
-      print("Request body: ${request.body}");
 
       http.StreamedResponse response = await request.send();
       log("Response status: ${response.statusCode}");
-      print("Response status: ${response.statusCode}");
       
       String responseBody = await response.stream.bytesToString();
       log("Response body: $responseBody");
-      print("Response body: $responseBody");
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
                 "Account created successfully! Please subscribe to continue."),
             backgroundColor: Colors.green,
@@ -62,12 +54,14 @@ class AuthController {
           await login(user.email, user.password, context);
         } catch (e) {
           log("Auto-login failed after signup: $e");
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-          );
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          }
         }
-      } else {
+      } else if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Signup failed: ${response.reasonPhrase}"),
@@ -78,14 +72,14 @@ class AuthController {
       }
     } catch (e) {
       log("Signup error: $e");
-      print("SIGNUP ERROR: $e");
-      print("Error type: ${e.runtimeType}");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Network error: $e"),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Network error: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -121,16 +115,18 @@ class AuthController {
         await prefs.setInt('id', id);
 
         // Show login success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text("Login Successful"), backgroundColor: Colors.green),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("Login Successful"), backgroundColor: Colors.green),
+          );
+        }
 
         // Now check subscription status to determine where to redirect
-        final SubscriptionController _subscriptionController =
+        final SubscriptionController subscriptionController =
             SubscriptionController();
         final status =
-            await _subscriptionController.checkSubscriptionStatus(email);
+            await subscriptionController.checkSubscriptionStatus(email);
 
         // Check if user has made a recent payment as a fallback
         String? paymentDateStr = prefs.getString('payment_date');
@@ -141,10 +137,9 @@ class AuthController {
             DateTime paymentDate = DateTime.parse(paymentDateStr);
             DateTime now = DateTime.now();
             hasRecentPayment = now.difference(paymentDate).inDays < 7;
-            print(
-                "Login check - Payment date: $paymentDateStr, Has recent payment: $hasRecentPayment");
+            log("Login check - Payment date: $paymentDateStr, Has recent payment: $hasRecentPayment");
           } catch (e) {
-            print("Error parsing payment date during login: $e");
+            log("Error parsing payment date during login: $e");
           }
         }
 
@@ -157,10 +152,10 @@ class AuthController {
         }
 
         // Debug logging for new users
-        print("=== LOGIN DEBUG INFO ===");
-        print("Backend subscription active: $backendSubscriptionActive");
-        print("Frontend subscription status: $status");
-        print("Has recent payment: $hasRecentPayment");
+        log("=== LOGIN DEBUG INFO ===");
+        log("Backend subscription active: $backendSubscriptionActive");
+        log("Frontend subscription status: $status");
+        log("Has recent payment: $hasRecentPayment");
 
         // Determine if user should have access
         bool shouldAllowAccess = false;
@@ -170,13 +165,11 @@ class AuthController {
             (status != null && status['isActive'] == true)) {
           // User has active subscription from backend or frontend check
           shouldAllowAccess = true;
-          print(
-              "Login: User has active subscription - allowing access to homepage");
+          log("Login: User has active subscription - allowing access to homepage");
         } else {
           // No active subscription - MUST subscribe (including new users)
           shouldAllowAccess = false;
-          print(
-              "Login: No active subscription - redirecting to subscription page");
+          log("Login: No active subscription - redirecting to subscription page");
         }
 
         // Redirect based on subscription status
@@ -184,16 +177,18 @@ class AuthController {
           Get.off(() => const HomePage());
         } else {
           // User needs to subscribe - redirect to subscription tier screen
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Please subscribe to access the app"),
-              backgroundColor: Colors.orange,
-              duration: Duration(seconds: 3),
-            ),
-          );
-          Get.off(() => SubscriptionTiersScreen());
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Please subscribe to access the app"),
+                backgroundColor: Colors.orange,
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+          Get.off(() => const SubscriptionTiersScreen());
         }
-      } else {
+      } else if (context.mounted) {
         // Show error message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -202,10 +197,12 @@ class AuthController {
         );
       }
     } catch (e) {
-      print("Login error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("$e"), backgroundColor: Colors.red),
-      );
+      log("Login error: $e");
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("$e"), backgroundColor: Colors.red),
+        );
+      }
     }
   }
 
@@ -232,21 +229,23 @@ class AuthController {
         log(responseData.toString());
 
         // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(responseData["message"] ??
-                "If an account with that email exists, a password reset link has been sent."),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 5),
-          ),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(responseData["message"] ??
+                  "If an account with that email exists, a password reset link has been sent."),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
 
         // Navigate back to login screen after short delay
         await Future.delayed(const Duration(seconds: 2));
         if (context.mounted) {
           Navigator.pop(context);
         }
-      } else {
+      } else if (context.mounted) {
         var errorData = jsonDecode(response.body);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -258,13 +257,15 @@ class AuthController {
       }
     } catch (e) {
       log("Password reset request error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              "Error: Unable to send reset email. Please check your connection."),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                "Error: Unable to send reset email. Please check your connection."),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -293,22 +294,24 @@ class AuthController {
         log(responseData.toString());
 
         // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(responseData["message"] ??
-                "Password reset successful. You can now log in with your new password."),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 5),
-          ),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(responseData["message"] ??
+                  "Password reset successful. You can now log in with your new password."),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
 
         // Navigate to login screen after short delay
         await Future.delayed(const Duration(seconds: 2));
         if (context.mounted) {
           // Navigate to login screen using Get
-          Get.off(() => LoginScreen());
+          Get.off(() => const LoginScreen());
         }
-      } else {
+      } else if (context.mounted) {
         var errorData = jsonDecode(response.body);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -320,12 +323,14 @@ class AuthController {
       }
     } catch (e) {
       log("Password reset error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Error: Unable to reset password. Please try again."),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Error: Unable to reset password. Please try again."),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }

@@ -58,7 +58,7 @@ class MusicList extends StatelessWidget {
 
                         if (isBinaural) {
                           // Play Binaural
-                          print("🎧 Setting binaural playing state");
+                          print("Setting binaural playing state");
                           bottomBarController.isBinauralPlaying.value = true;
                         } else {
                           // Play Music
@@ -70,7 +70,7 @@ class MusicList extends StatelessWidget {
 
                         if (isBinaural) {
                           print(
-                              "🎧 Calling playBinaural with: ${item.fileUrl}");
+                              "Calling playBinaural with: ${item.fileUrl}");
                           // Test with a known working URL if the API URL fails
                           final testUrl = item.fileUrl.isNotEmpty
                               ? item.fileUrl

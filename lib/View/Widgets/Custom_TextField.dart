@@ -8,7 +8,7 @@ class CustomTextField extends StatelessWidget {
   final bool enabled;
   final Widget? suffixIcon;
 
-  const CustomTextField({
+  const CustomTextField({super.key, 
     required this.hintText,
     this.obscureText = false,
     required this.controller,

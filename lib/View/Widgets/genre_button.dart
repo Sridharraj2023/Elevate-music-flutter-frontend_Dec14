@@ -20,7 +20,7 @@ class GenreButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Icon(LucideIcons.playCircle, color: Colors.black, size: 24),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Flexible(

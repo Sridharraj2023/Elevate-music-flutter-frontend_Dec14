@@ -94,6 +94,8 @@
 //   }
 // }
 //////////////////////////////////////////////////////////////////////////
+library;
+
 //ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, unnecessary_import
 
 import 'package:elevate/Controller/Subscription_Controller.dart';
@@ -109,7 +111,6 @@ import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'View/Screens/Homepage_Screen.dart';
 import 'services/notification_service.dart';
-import 'utlis/api_test_mysql.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -187,11 +188,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (token != null && token.isNotEmpty) {
         String? userEmail = prefs.getString('email');
-        final SubscriptionController _subscriptionController =
+        final SubscriptionController subscriptionController =
             SubscriptionController();
 
         final status =
-            await _subscriptionController.checkSubscriptionStatus(userEmail!);
+            await subscriptionController.checkSubscriptionStatus(userEmail!);
 
         // Check if user has made a recent payment as a fallback
         String? paymentDateStr = prefs.getString('payment_date');
@@ -231,7 +232,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Get.off(() => const HomePage());
         } else {
           // Redirect to subscription page - user needs to pay
-          Get.off(() => SubscriptionTiersScreen());
+          Get.off(() => const SubscriptionTiersScreen());
         }
       } else {
         Get.off(() => LoginScreen());

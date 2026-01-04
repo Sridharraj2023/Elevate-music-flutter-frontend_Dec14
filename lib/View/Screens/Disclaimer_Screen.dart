@@ -7,7 +7,7 @@ import '../../utils/responsive_helper.dart';
 import '../Widgets/Gradient_Container.dart';
 
 class DisclaimerScreen extends StatefulWidget {
-  const DisclaimerScreen({Key? key}) : super(key: key);
+  const DisclaimerScreen({super.key});
 
   @override
   State<DisclaimerScreen> createState() => _DisclaimerScreenState();

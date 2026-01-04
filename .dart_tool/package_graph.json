@@ -24,7 +24,8 @@
         "open_filex",
         "path_provider",
         "permission_handler",
-        "shared_preferences"
+        "shared_preferences",
+        "timezone"
       ],
       "devDependencies": [
         "flutter_lints",
@@ -54,6 +55,14 @@
         "stream_channel",
         "test_api",
         "vector_math"
+      ]
+    },
+    {
+      "name": "timezone",
+      "version": "0.10.1",
+      "dependencies": [
+        "http",
+        "path"
       ]
     },
     {
@@ -438,14 +447,6 @@
       "dependencies": [
         "flutter",
         "permission_handler_platform_interface"
-      ]
-    },
-    {
-      "name": "timezone",
-      "version": "0.10.1",
-      "dependencies": [
-        "http",
-        "path"
       ]
     },
     {

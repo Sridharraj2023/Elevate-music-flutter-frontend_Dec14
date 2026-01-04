@@ -175,12 +175,13 @@ import '../Widgets/Custom_TextField.dart';
 import '../Widgets/Gradient_Container.dart';
 import 'Signup_Screen.dart';
 import 'ForgotPassword_Screen.dart';
-import 'TermsConditions_Screen.dart';
 
 class LoginScreen extends StatelessWidget {
   final AuthController _authController = AuthController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  LoginScreen({super.key});
 
   void _login(BuildContext context) {
     final email = _emailController.text.trim();
@@ -189,7 +190,7 @@ class LoginScreen extends StatelessWidget {
     // Validate empty fields
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Email and password cannot be empty."),
           backgroundColor: Colors.red,
         ),
@@ -201,7 +202,7 @@ class LoginScreen extends StatelessWidget {
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
     if (!emailRegex.hasMatch(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Please enter a valid email address."),
           backgroundColor: Colors.red,
         ),
@@ -327,7 +328,7 @@ class LoginScreen extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignupScreen()),
+                                  builder: (context) => const SignupScreen()),
                             );
                           },
                           child: Text(

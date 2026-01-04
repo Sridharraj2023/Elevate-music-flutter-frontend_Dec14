@@ -36,10 +36,10 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
       String? userEmail = prefs.getString('email');
 
       if (userEmail != null) {
-        final SubscriptionController _subscriptionController =
+        final SubscriptionController subscriptionController =
             SubscriptionController();
         final status =
-            await _subscriptionController.checkSubscriptionStatus(userEmail);
+            await subscriptionController.checkSubscriptionStatus(userEmail);
 
         // Check if user has made a recent payment as a fallback
         String? paymentDateStr = prefs.getString('payment_date');
@@ -81,7 +81,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
             // Redirect to subscription page after a short delay
             Future.delayed(const Duration(seconds: 2), () {
               if (mounted) {
-                Get.off(() => SubscriptionTiersScreen());
+                Get.off(() => const SubscriptionTiersScreen());
               }
             });
           }
@@ -94,7 +94,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
         });
 
         if (mounted) {
-          Get.off(() => SubscriptionTiersScreen());
+          Get.off(() => const SubscriptionTiersScreen());
         }
       }
     } catch (e) {
@@ -106,7 +106,7 @@ class _SubscriptionGuardState extends State<SubscriptionGuard> {
       });
 
       if (mounted) {
-        Get.off(() => SubscriptionTiersScreen());
+        Get.off(() => const SubscriptionTiersScreen());
       }
     }
   }

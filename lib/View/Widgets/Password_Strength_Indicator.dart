@@ -4,9 +4,9 @@ class PasswordStrengthIndicator extends StatelessWidget {
   final String password;
 
   const PasswordStrengthIndicator({
-    Key? key,
+    super.key,
     required this.password,
-  }) : super(key: key);
+  });
 
   // Check individual password requirements
   bool get hasMinLength => password.length >= 8;
@@ -46,14 +46,14 @@ class PasswordStrengthIndicator extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     if (password.isEmpty) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Password Strength Bar
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Row(
           children: [
             Expanded(
@@ -75,7 +75,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Text(
               strengthText,
               style: TextStyle(
@@ -86,7 +86,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
 
         // Password Requirements Checklist
         _buildRequirement('At least 8 characters', hasMinLength, screenWidth),
@@ -111,7 +111,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
             color: isMet ? Colors.green : Colors.red.withOpacity(0.7),
             size: screenWidth * 0.04,
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             text,
             style: TextStyle(

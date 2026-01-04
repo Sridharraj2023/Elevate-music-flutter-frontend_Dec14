@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CustomTabBar extends StatelessWidget {
   final TabController tabController;
 
-  const CustomTabBar({required this.tabController});
+  const CustomTabBar({super.key, required this.tabController});
 
   @override
   Widget build(BuildContext context) {

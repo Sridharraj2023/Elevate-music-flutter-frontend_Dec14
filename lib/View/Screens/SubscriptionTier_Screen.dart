@@ -1,8 +1,6 @@
 // views/screens/subscription_tiers_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../Controller/Subscription_Controller.dart';
 import '../../Model/Subscription_Tiers.dart';
 import '../widgets/gradient_container.dart';
@@ -56,10 +54,10 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Scaffold(
+      return const Scaffold(
         backgroundColor: Colors.transparent,
         body: GradientContainer(
-          child: const Center(
+          child: Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
@@ -211,7 +209,7 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
                                                 ? const Color(0xFF6F41F3)
                                                 : Colors.white,
                                         fillColor:
-                                            MaterialStateProperty.resolveWith(
+                                            WidgetStateProperty.resolveWith(
                                           (states) =>
                                               selectedBillingPeriod == 'monthly'
                                                   ? const Color(0xFF6F41F3)
@@ -271,7 +269,7 @@ class _SubscriptionTiersScreenState extends State<SubscriptionTiersScreen> {
                                                 ? const Color(0xFF6F41F3)
                                                 : Colors.white,
                                         fillColor:
-                                            MaterialStateProperty.resolveWith(
+                                            WidgetStateProperty.resolveWith(
                                           (states) =>
                                               selectedBillingPeriod == 'yearly'
                                                   ? const Color(0xFF6F41F3)

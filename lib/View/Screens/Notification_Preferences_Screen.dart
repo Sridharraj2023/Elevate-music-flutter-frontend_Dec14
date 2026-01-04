@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../services/notification_service.dart';
 
 class NotificationPreferencesScreen extends StatefulWidget {
@@ -151,7 +150,7 @@ class _NotificationPreferencesScreenState
                           onChanged: (value) {
                             setState(() => _emailReminders = value);
                           },
-                          activeColor: const Color(0xFF6F41F3),
+                          activeThumbColor: const Color(0xFF6F41F3),
                         ),
                       ),
 
@@ -169,7 +168,7 @@ class _NotificationPreferencesScreenState
                           onChanged: (value) {
                             setState(() => _pushNotifications = value);
                           },
-                          activeColor: const Color(0xFF6F41F3),
+                          activeThumbColor: const Color(0xFF6F41F3),
                         ),
                       ),
 

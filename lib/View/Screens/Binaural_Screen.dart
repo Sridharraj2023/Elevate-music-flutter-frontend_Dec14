@@ -54,10 +54,7 @@ import 'package:elevate/Model/music_item.dart';
 import 'package:elevate/utlis/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../Controller/Binaural_controller.dart';
-import '../../utils/responsive_helper.dart';
 import '../Widgets/Gradient_Container.dart';
 import '../Widgets/Round_option_button.dart';
 import '../Widgets/SubscriptionGuard.dart';
@@ -65,6 +62,8 @@ import 'package:http/http.dart' as http;
 
 class BinauralPage extends StatelessWidget {
   final BinauralController _binauralController = BinauralController();
+
+  BinauralPage({super.key});
 
   @override
   Widget build(BuildContext context) {

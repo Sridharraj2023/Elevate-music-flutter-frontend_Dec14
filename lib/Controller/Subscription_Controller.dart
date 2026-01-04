@@ -32,7 +32,7 @@ class SubscriptionController {
     if (_isLoadingTiers) {
       // If already loading, wait for it to complete
       while (_isLoadingTiers) {
-        await Future.delayed(Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 100));
       }
       return _cachedTiers;
     }
@@ -147,7 +147,7 @@ class SubscriptionController {
         throw Exception("Session expired. Please login again.");
       } else {
         final errorData = jsonDecode(response.body);
-        print("Subscription creation error: ${errorData}");
+        print("Subscription creation error: $errorData");
 
         // Handle specific error messages
         String errorMessage =
@@ -228,7 +228,7 @@ class SubscriptionController {
         // Try checking status with more retries and longer delays
         bool subscriptionActive = false;
         for (int i = 0; i < 5; i++) {
-          await Future.delayed(Duration(seconds: 3));
+          await Future.delayed(const Duration(seconds: 3));
           final statusCheck =
               await checkSubscriptionStatus(prefs.getString('email') ?? '');
           if (statusCheck != null && statusCheck['isActive'] == true) {
@@ -272,34 +272,34 @@ class SubscriptionController {
 
       // Handle specific Stripe errors
       if (e.toString().contains('PaymentSheetError')) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content:
                 Text("Payment was cancelled or failed. Please try again.")));
       } else if (e.toString().contains('PaymentIntent')) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Payment processing error. Please try again.")));
       } else if (e.toString().contains('Session expired')) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Session expired. Please login again.")));
+            const SnackBar(content: Text("Session expired. Please login again.")));
         // Redirect to login screen if
         Get.offAll(() => LoginScreen());
       } else if (e.toString().contains('Payment setup error')) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Payment setup error. Please try again.")));
+            const SnackBar(content: Text("Payment setup error. Please try again.")));
       } else if (e.toString().contains('Subscription plan error')) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Subscription plan error. Please contact support.")));
       } else if (e.toString().contains('Account error')) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Account error. Please try again.")));
+            const SnackBar(content: Text("Account error. Please try again.")));
       } else if (e.toString().contains('Payment processing error')) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Payment processing error. Please try again.")));
       } else if (e.toString().contains('Payment method update failed')) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Payment method update failed. Please try again.")));
       } else if (e.toString().contains('Payment method attachment error')) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content:
                 Text("Payment method attachment error. Please try again.")));
       } else {
@@ -400,7 +400,7 @@ class SubscriptionController {
       print("Payment sheet completed successfully!");
 
       // Wait a moment for the payment method to be attached
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
       // Re-check billing status
       print("Checking billing status...");

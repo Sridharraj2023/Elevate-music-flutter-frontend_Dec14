@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import '../../Controller/Subscription_Controller.dart';
 
 class PaymentMethodSetupScreen extends StatefulWidget {
@@ -234,15 +233,15 @@ class _PaymentMethodSetupScreenState extends State<PaymentMethodSetupScreen> {
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.check_circle,
                           color: Colors.white,
                           size: 24,
                         ),
-                        const SizedBox(width: 12),
-                        const Expanded(
+                        SizedBox(width: 12),
+                        Expanded(
                           child: Text(
                             'Payment method setup complete! You can now enable auto-debit.',
                             style: TextStyle(

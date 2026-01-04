@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors
 
-import 'dart:developer';
 
 import 'package:elevate/Controller/BottomBar_Controller.dart';
 import 'package:elevate/Controller/Home_Controller.dart';
@@ -9,13 +8,11 @@ import 'package:elevate/Model/music_item.dart';
 import 'package:elevate/View/Screens/Binaural_Screen.dart';
 import 'package:elevate/View/Screens/Login_Screen.dart';
 import 'package:elevate/View/Screens/Music_Screen.dart';
-import 'package:elevate/View/Screens/SubscriptionTier_Screen.dart';
 import 'package:elevate/View/Widgets/Gradient_Container.dart';
 import 'package:elevate/View/Widgets/Music_List.dart';
 import 'package:elevate/View/Widgets/Search_Bar.dart';
 import 'package:elevate/View/Widgets/Tab_Bar.dart';
 import 'package:elevate/View/Widgets/audio_player_widget.dart';
-import 'package:elevate/View/Widgets/subscription_status.dart';
 import 'package:elevate/View/Screens/Subscription_Details_Screen.dart';
 import 'package:elevate/View/Screens/Notification_Preferences_Screen.dart';
 import 'package:elevate/View/Screens/Notification_History_Screen.dart';
@@ -24,7 +21,6 @@ import 'package:elevate/View/Screens/Disclaimer_Screen.dart';
 import 'package:elevate/utlis/api_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -110,10 +106,10 @@ class _HomePageState extends State<HomePage>
       String? userEmail = prefs.getString('email');
 
       if (userEmail != null) {
-        final SubscriptionController _subscriptionController =
+        final SubscriptionController subscriptionController =
             SubscriptionController();
         final status =
-            await _subscriptionController.checkSubscriptionStatus(userEmail);
+            await subscriptionController.checkSubscriptionStatus(userEmail);
 
         // Check if user has made a recent payment as a fallback
         String? paymentDateStr = prefs.getString('payment_date');

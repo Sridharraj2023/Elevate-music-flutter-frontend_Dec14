@@ -355,7 +355,7 @@ By proceeding to use the Elevate App, you acknowledge that you have read, unders
               // Agree button at the bottom
               if (widget.showAgreeButton)
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
                     onPressed: _handleAgree,
                     style: ElevatedButton.styleFrom(

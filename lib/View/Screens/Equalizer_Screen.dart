@@ -18,9 +18,7 @@ class EqualizerScreen extends StatelessWidget {
     }
 
     // Ensure controller is properly initialized
-    if (controller == null) {
-      controller = Get.put(EqualizerController());
-    }
+    controller ??= Get.put(EqualizerController());
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -154,7 +152,7 @@ class EqualizerScreen extends StatelessWidget {
                                   controller.isEqualizerEnabled.value
                                       ? Icons.graphic_eq
                                       : Icons.graphic_eq_outlined,
-                                  color: controller.isEqualizerEnabled.valueS
+                                  color: controller.isEqualizerEnabled.value
                                       ? Colors.green
                                       : Colors.white,
                                   size: 20,
@@ -814,7 +812,7 @@ class EqualizerScreen extends StatelessWidget {
                   size: 18,
                 ),
                 const SizedBox(width: 8),
-                Text(
+                const Text(
                   'Reset to Flat',
                   style: TextStyle(
                     color: Colors.white,

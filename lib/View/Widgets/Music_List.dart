@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../Controller/BottomBar_Controller.dart';
 import '../../Model/music_item.dart';
@@ -18,7 +17,7 @@ class MusicList extends StatelessWidget {
       Get.find<BottomBarController>();
   @override
   Widget build(BuildContext context) {
-    String _resolveImageUrl(String url) {
+    String resolveImageUrl(String url) {
       if (url.isEmpty) return url;
       try {
         if (url.startsWith('/uploads/')) {
@@ -106,7 +105,7 @@ class MusicList extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.network(
-                          _resolveImageUrl(item.imageUrl),
+                          resolveImageUrl(item.imageUrl),
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
@@ -127,7 +126,7 @@ class MusicList extends StatelessWidget {
                           errorBuilder: (context, error, stackTrace) {
                             print('Image load error for ${item.title}: $error');
                             print(
-                                'Image URL: ${_resolveImageUrl(item.imageUrl)}');
+                                'Image URL: ${resolveImageUrl(item.imageUrl)}');
                             return Container(
                               width: 100,
                               height: 100,

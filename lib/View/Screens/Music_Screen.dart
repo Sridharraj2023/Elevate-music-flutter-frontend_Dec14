@@ -3,10 +3,8 @@ import 'package:elevate/View/Screens/Binaural_Screen.dart';
 import 'package:elevate/View/Widgets/SubscriptionGuard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../Controller/Music_Controller.dart';
 import '../../utils/responsive_helper.dart';
-import '../Widgets/Recently_played_items.dart';
 
 import '../widgets/section_title.dart';
 

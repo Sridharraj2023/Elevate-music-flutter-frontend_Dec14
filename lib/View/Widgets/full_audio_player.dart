@@ -23,7 +23,7 @@ class FullAudioPlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String _resolveImageUrl(String url) {
+    String resolveImageUrl(String url) {
       if (url.isEmpty) return url;
       try {
         // Relative uploads path → prefix with production base
@@ -203,7 +203,7 @@ class FullAudioPlayerScreen extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(30),
                             child: Image.network(
-                              _resolveImageUrl(currentTrack.imageUrl),
+                              resolveImageUrl(currentTrack.imageUrl),
                               fit: BoxFit.cover,
                               loadingBuilder:
                                   (context, child, loadingProgress) {
@@ -508,13 +508,13 @@ class FullAudioPlayerScreen extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.graphic_eq,
                                       color: Colors.white,
                                       size: 24,
                                     ),
                                     const SizedBox(width: 12),
-                                    Text(
+                                    const Text(
                                       'Equalizer',
                                       style: TextStyle(
                                         color: Colors.white,

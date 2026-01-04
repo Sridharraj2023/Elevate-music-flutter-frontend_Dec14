@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:elevate/Controller/Subscription_Controller.dart';
 import 'package:elevate/utlis/clear_false_payment_data.dart';
 import 'package:elevate/utlis/subscription_flow_debug.dart';
-import 'package:elevate/utils/responsive_helper.dart';
 import 'Payment_Method_Setup_Screen.dart';
 
 class SubscriptionDetailsScreen extends StatefulWidget {
@@ -553,7 +552,7 @@ class _SubscriptionDetailsScreenState extends State<SubscriptionDetailsScreen> {
                       const SizedBox(height: 8),
                       Text(
                         _getStatusMessage(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xFF666666),
                         ),
@@ -788,7 +787,7 @@ class _SubscriptionDetailsScreenState extends State<SubscriptionDetailsScreen> {
                                 }
                               }
                             },
-                            activeColor: const Color(0xFF6F41F3),
+                            activeThumbColor: const Color(0xFF6F41F3),
                           ),
                         ],
                       ),

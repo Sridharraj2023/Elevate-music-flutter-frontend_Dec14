@@ -385,7 +385,7 @@ class StandaloneEqualizerScreen extends StatelessWidget {
                                       size: 20,
                                     ),
                                     const SizedBox(width: 8),
-                                    Text(
+                                    const Text(
                                       'Reset to Flat',
                                       style: TextStyle(
                                         color: Colors.white,
@@ -437,7 +437,7 @@ class StandaloneEqualizerScreen extends StatelessWidget {
           ),
           child: Text(
             '${gain.toStringAsFixed(0)}dB', // Integer to save space
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 8,
               fontWeight: FontWeight.w600,

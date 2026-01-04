@@ -6,7 +6,7 @@ class FeatureRow extends StatelessWidget {
   final String value;
   final bool isEmphasized;
 
-  const FeatureRow({
+  const FeatureRow({super.key, 
     required this.label,
     required this.value,
     this.isEmphasized = true,

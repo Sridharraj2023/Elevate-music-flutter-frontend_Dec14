@@ -176,20 +176,18 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../Controller/Auth_Controller.dart';
 import '../../Model/user.dart';
 import '../Widgets/Custom_TextField.dart';
 import '../Widgets/Password_Strength_Indicator.dart';
 import '../widgets/gradient_container.dart';
 import 'Login_Screen.dart';
-import 'SubscriptionTier_Screen.dart';
-import 'Legal_Pdf_View.dart';
 import 'TermsConditions_Screen.dart';
 import 'Disclaimer_Screen.dart';
 
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
@@ -237,7 +235,7 @@ class _SignupScreenState extends State<SignupScreen> {
         password.isEmpty ||
         confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text("All fields are required."),
             backgroundColor: Colors.red),
       );
@@ -248,7 +246,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
     if (!emailRegex.hasMatch(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text("Please enter a valid email address."),
             backgroundColor: Colors.red),
       );
@@ -258,7 +256,7 @@ class _SignupScreenState extends State<SignupScreen> {
     // Password match check
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text("Passwords do not match."),
             backgroundColor: Colors.red),
       );
@@ -274,7 +272,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (!hasMinLength) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Password must be at least 8 characters long."),
           backgroundColor: Colors.red,
         ),
@@ -284,7 +282,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (!hasUppercase) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Password must contain at least one uppercase letter."),
           backgroundColor: Colors.red,
         ),
@@ -294,7 +292,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (!hasLowercase) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Password must contain at least one lowercase letter."),
           backgroundColor: Colors.red,
         ),
@@ -304,7 +302,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (!hasNumber) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Password must contain at least one number."),
           backgroundColor: Colors.red,
         ),
@@ -314,7 +312,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (!hasSpecialChar) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text(
               "Password must contain at least one special character (!@#\$%^&*)."),
           backgroundColor: Colors.red,
@@ -333,7 +331,7 @@ class _SignupScreenState extends State<SignupScreen> {
     } catch (e) {
       log('Signup Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text("An unexpected error occurred."),
             backgroundColor: Colors.red),
       );
@@ -400,7 +398,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         hintText: "Confirm Password",
                         obscureText: true,
                         controller: _confirmPasswordController),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     // Terms & Disclaimer checkboxes (moved below Confirm Password)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -465,9 +463,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     const SizedBox(height: 16),
                     // Signup button
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     _isLoading
-                        ? CircularProgressIndicator(color: Colors.white)
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : ElevatedButton(
                             onPressed:
                                 _acceptedTerms ? () => _signUp(context) : null,
@@ -485,7 +483,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     fontSize: screenWidth * 0.05,
                                     fontWeight: FontWeight.bold)),
                           ),
-                    SizedBox(height: 12),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

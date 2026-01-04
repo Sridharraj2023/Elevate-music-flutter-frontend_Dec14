@@ -57,7 +57,7 @@ class AuthController {
           if (context.mounted) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              MaterialPageRoute(builder: (context) => LoginScreen()),
             );
           }
         }
@@ -309,7 +309,7 @@ class AuthController {
         await Future.delayed(const Duration(seconds: 2));
         if (context.mounted) {
           // Navigate to login screen using Get
-          Get.off(() => const LoginScreen());
+          Get.off(() => LoginScreen());
         }
       } else if (context.mounted) {
         var errorData = jsonDecode(response.body);

@@ -9,7 +9,7 @@ class SubscriptionTierCard extends StatelessWidget {
   final bool isAdmin;
   final String selectedBillingPeriod;
 
-  const SubscriptionTierCard({
+  const SubscriptionTierCard({super.key, 
     required this.tier,
     this.isAdmin = false,
     this.selectedBillingPeriod = 'monthly',
@@ -27,14 +27,14 @@ class SubscriptionTierCard extends StatelessWidget {
           children: [
             Text(
               tier.title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             FeatureRow(
               label: 'Monthly Cost: ',
               value: tier.formattedMonthlyCost,

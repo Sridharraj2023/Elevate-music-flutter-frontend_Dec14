@@ -73,7 +73,6 @@
 import 'dart:convert';
 import 'package:elevate/utlis/api_constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../Model/music_item.dart';
 
 class HomeController {

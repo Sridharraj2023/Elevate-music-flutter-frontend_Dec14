@@ -61,11 +61,11 @@ class ResponsiveHelper {
   /// Get constrained box for forms (useful for login/signup screens on tablets)
   static BoxConstraints getFormConstraints(BuildContext context) {
     if (isMobile(context)) {
-      return BoxConstraints(maxWidth: double.infinity);
+      return const BoxConstraints(maxWidth: double.infinity);
     } else if (isTablet(context)) {
-      return BoxConstraints(maxWidth: 500);
+      return const BoxConstraints(maxWidth: 500);
     } else {
-      return BoxConstraints(maxWidth: 600);
+      return const BoxConstraints(maxWidth: 600);
     }
   }
 
@@ -88,7 +88,7 @@ class ResponsiveHelper {
         minHeight: 50,
       );
     } else {
-      return BoxConstraints(
+      return const BoxConstraints(
         minWidth: 400,
         minHeight: 55,
       );
@@ -122,11 +122,11 @@ class ResponsiveBuilder extends StatelessWidget {
       desktop;
 
   const ResponsiveBuilder({
-    Key? key,
+    super.key,
     required this.mobile,
     this.tablet,
     this.desktop,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -151,11 +151,11 @@ class ResponsiveCenter extends StatelessWidget {
   final EdgeInsets? padding;
 
   const ResponsiveCenter({
-    Key? key,
+    super.key,
     required this.child,
     this.maxWidth = 500,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,29 @@
-// views/widgets/search_bar.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../Screens/Search_Results_Screen.dart';
 
-class SearchBar1 extends StatelessWidget {
+class SearchBar1 extends StatefulWidget {
   const SearchBar1({super.key});
+
+  @override
+  State<SearchBar1> createState() => _SearchBar1State();
+}
+
+class _SearchBar1State extends State<SearchBar1> {
+  final TextEditingController _searchController = TextEditingController();
+
+  void _performSearch() {
+    final query = _searchController.text.trim();
+    if (query.isNotEmpty) {
+      Get.to(() => SearchResultsScreen(query: query));
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +34,11 @@ class SearchBar1 extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              controller: _searchController,
+              onSubmitted: (_) => _performSearch(),
+              decoration: const InputDecoration(
                 hintText: "Song, Artist, Album, Genres, Etc",
                 hintStyle: TextStyle(color: Colors.grey),
                 border: InputBorder.none,
@@ -25,7 +48,7 @@ class SearchBar1 extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {}, // Add search function
+            onPressed: _performSearch,
             icon: const Icon(Icons.search, color: Colors.grey),
           ),
         ],

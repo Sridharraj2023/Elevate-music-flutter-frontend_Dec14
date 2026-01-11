@@ -227,31 +227,33 @@ class BinauralSongsScreen extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(16),
-                                          bottomLeft: Radius.circular(16)),
-                                      child: Image.asset(
-                                        'assets/images/music_bg.jpg', // Replace with dynamic image if available
-                                        width: 80,
-                                        height: 80,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                const Icon(Icons.music_note,
-                                                    color: Colors.white,
-                                                    size: 80),
-                                      ),
-                                    ),
-                                    // const Positioned.fill(
-                                    //   child: Center(
-                                    //     child: Icon(Icons.play_circle_fill,
-                                    //         color: Colors.white, size: 36),
-                                    //   ),
-                                    // ),
-                                  ],
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(16),
+                                      bottomLeft: Radius.circular(16)),
+                                  child: song.imageUrl.isNotEmpty
+                                      ? Image.network(
+                                          '${ApiConstants.baseUrl}${song.imageUrl}',
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Container(
+                                            width: 80,
+                                            height: 80,
+                                            color: Colors.white.withOpacity(0.1),
+                                            child: const Icon(Icons.music_note,
+                                                color: Colors.white, size: 40),
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 80,
+                                          height: 80,
+                                          color: Colors.white.withOpacity(0.1),
+                                          child: const Icon(Icons.music_note,
+                                              color: Colors.white, size: 40),
+                                        ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
@@ -541,25 +543,33 @@ class MusicSongsScreen extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(16),
-                                          bottomLeft: Radius.circular(16)),
-                                      child: Image.asset(
-                                        'assets/images/music_bg.jpg',
-                                        width: 80,
-                                        height: 80,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                const Icon(Icons.music_note,
-                                                    color: Colors.white,
-                                                    size: 80),
-                                      ),
-                                    ),
-                                  ],
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(16),
+                                      bottomLeft: Radius.circular(16)),
+                                  child: song.imageUrl.isNotEmpty
+                                      ? Image.network(
+                                          '${ApiConstants.baseUrl}${song.imageUrl}',
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Container(
+                                            width: 80,
+                                            height: 80,
+                                            color: Colors.white.withOpacity(0.1),
+                                            child: const Icon(Icons.music_note,
+                                                color: Colors.white, size: 40),
+                                          ),
+                                        )
+                                      : Container(
+                                          width: 80,
+                                          height: 80,
+                                          color: Colors.white.withOpacity(0.1),
+                                          child: const Icon(Icons.music_note,
+                                              color: Colors.white, size: 40),
+                                        ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(

@@ -52,6 +52,7 @@ dependencies:
   path_provider: ^2.1.4
   open_filex: ^4.4.0
   timezone: any
+  url_launcher: ^6.1.14
 dev_dependencies:
   flutter_test:
     sdk: flutter

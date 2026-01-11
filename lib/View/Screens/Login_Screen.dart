@@ -173,6 +173,7 @@ import 'package:flutter/material.dart';
 import '../../Controller/Auth_Controller.dart';
 import '../Widgets/Custom_TextField.dart';
 import '../Widgets/Gradient_Container.dart';
+import '../Widgets/Social_Media_Links.dart';
 import 'Signup_Screen.dart';
 import 'ForgotPassword_Screen.dart';
 
@@ -367,6 +368,11 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    SizedBox(height: screenHeight * 0.04),
+
+                    // Social Media Links
+                    const SocialMediaLinks(iconSize: 40),
 
                     SizedBox(height: screenHeight * 0.02),
                   ],

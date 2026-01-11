@@ -180,6 +180,7 @@ import '../../Controller/Auth_Controller.dart';
 import '../../Model/user.dart';
 import '../Widgets/Custom_TextField.dart';
 import '../Widgets/Password_Strength_Indicator.dart';
+import '../Widgets/Social_Media_Links.dart';
 import '../widgets/gradient_container.dart';
 import 'Login_Screen.dart';
 import 'TermsConditions_Screen.dart';
@@ -504,6 +505,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 24),
+                    // Social Media Links
+                    const SocialMediaLinks(iconSize: 40),
+                    const SizedBox(height: 16),
                   ],
                 ),
               ),

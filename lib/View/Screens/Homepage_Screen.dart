@@ -18,6 +18,7 @@ import 'package:elevate/View/Screens/Notification_Preferences_Screen.dart';
 import 'package:elevate/View/Screens/Notification_History_Screen.dart';
 import 'package:elevate/View/Screens/TermsConditions_Screen.dart';
 import 'package:elevate/View/Screens/Disclaimer_Screen.dart';
+import 'package:elevate/View/Screens/Frequency_Guide_Screen.dart';
 import 'package:elevate/utlis/api_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -239,6 +240,19 @@ class _HomePageState extends State<HomePage>
               },
             ),
             Divider(),
+            ListTile(
+              leading: Icon(Icons.library_books, color: Color(0xFF6F41F3)),
+              title: Text("Frequency Guide"),
+              onTap: () {
+                Navigator.pop(context); // Close drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FrequencyGuideScreen(),
+                  ),
+                );
+              },
+            ),
             ListTile(
               leading: Icon(Icons.description, color: Color(0xFF6F41F3)),
               title: Text("Terms & Conditions"),
